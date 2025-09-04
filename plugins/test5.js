@@ -1,6 +1,7 @@
 import { totalmem, freemem } from 'os'
 import osu from 'node-os-utils'
 import { sizeFormatter } from 'human-readable'
+import { performance } from 'perf_hooks'
 
 const cpu = osu.cpu
 const format = sizeFormatter({
@@ -11,10 +12,10 @@ const format = sizeFormatter({
 })
 
 var handler = async (m, { conn }) => {
-  // Latencia aproximada
-  let start = Date.now()
+  // Latencia real con microsegundos
+  let start = performance.now()
   if (conn.sendPresenceUpdate) await conn.sendPresenceUpdate('composing', m.chat)
-  let latency = Date.now() - start
+  let latency = (performance.now() - start).toFixed(4) // Ej: 0.9999 ms
 
   // Uptime
   let muptime = clockString(process.uptime() * 1000)
@@ -52,9 +53,9 @@ var handler = async (m, { conn }) => {
   conn.reply(m.chat, texto, m)
 }
 
-handler.help = ['t7']
-handler.tags = ['info']
-handler.command = ['t7']
+handler.help = ['speed2']     // ayuda
+handler.tags = ['info']       // categoría
+handler.command = ['speed2']  // comando que ejecuta .speed2
 
 export default handler
 
