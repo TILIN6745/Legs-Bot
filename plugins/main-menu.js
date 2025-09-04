@@ -24,17 +24,17 @@ const tags = {
 
 const defaultMenu = {
   before: `
-🥞 *Hola soy %botname* _( %tipo )_
+> 🥞 *Hola soy %botname* _( %tipo )_
 
-🌳 Hola *%name* 👋
-🧃 Fecha: \`%date\`
-🦀 Hora: \`%hour\`
-━━━━━━━━━━━━━━━
+> 🌳 Hola *%name* 👋
+> 🧃 Fecha: \`%date\`
+> 🦀 Hora: \`%hour\`
+> ━━━━━━━━━━━━━━━
 `,  
-  header: '> *%category*\n',
-  body: '> 🐢: `%cmd` %islimit %isPremium\n',
+  header: '> *%category *\n',
+  body: '> 🌾 `%cmd` %islimit %isPremium\n',
   footer: '\n',
-  after: '\n🥮 ㅤCreador › Ado'
+  after: '\n> 🥮 ㅤCreador › *Ado*'
 }
 
 const handler = async (m, { conn, usedPrefix: _p }) => {
@@ -129,7 +129,6 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
     const buffer = await res.buffer()
 
     const buttonMessage = {
-      document: Buffer.from("Menu"), 
       mimetype: `application/${document}`,
       fileName: `「 📑 Menú de comandos 」`,
       fileLength: 9999999999999,
@@ -139,13 +138,13 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         isForwarded: true,
         externalAdReply: {
           mediaUrl: bannerFinal,
-          mediaType: 1, 
+          mediaType: 1,
           previewType: 'pdf',
           title: nombreBot,
-          body: "🐢 Usa los comandos a tu gusto",
+          body: "> 🐢 *Usa los comandos a tu gusto*",
           thumbnail: buffer,
           sourceUrl: "https://myapiadonix.vercel.app",
-          renderLargerThumbnail: true 
+          renderLargerThumbnail: true
         }
       },
       caption: text,
@@ -166,7 +165,6 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
 handler.command = ['m','menu','help','ayuda']
 export default handler
 
-// Utils
 const more = String.fromCharCode(8206)
 const readMore = more.repeat(4001)
 
