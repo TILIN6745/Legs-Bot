@@ -23,15 +23,16 @@ const tags = {
 
 const defaultMenu = {
   before: `
-🧃  Hola soy *%botname* *_(%tipo)_*
+🧃 Hola soy %botname (%tipo)
 
-🌳  *¿Cómo estas?* %name
+🌳 ¿Cómo estas? %name
 
-🥞  *Fecha ›* %date
-🥮  *Hora ›* %hour
+🥞 Fecha › %date
+🥮 Hora › %hour
 `,
-  header: '> *%category*\n',
-  body: '> 🌾 *%cmd* %islimit %isPremium',
+
+  header: '> %category\n',
+  body: '> 🥞 %cmd %islimit %isPremium',
   footer: '',
   after: '> 🐢 Creador › Ado'
 }
@@ -56,19 +57,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         premium: p.premium,
       }))
 
-    let nombreBot = global.namebot || 'Bot'
-    let bannerFinal = 'https://iili.io/KJXN7yB.jpg'
-
-    const botActual = conn.user?.jid?.split('@')[0]?.replace(/\D/g, '')
-    const configPath = join('./JadiBots', botActual || '', 'config.json')
-    if (botActual && fs.existsSync(configPath)) {
-      try {
-        const config = JSON.parse(fs.readFileSync(configPath))
-        if (config.name) nombreBot = config.name
-        if (config.banner) bannerFinal = config.banner
-      } catch {}
-    }
-
+    const nombreBot = global.namebot || 'Bot'
     const tipo = conn.user?.jid === global.conn?.user?.jid ? 'Principal' : 'SubBot'
     const menuConfig = conn.menu || defaultMenu
 
@@ -77,7 +66,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       ...Object.keys(tags).sort().map(tag => {
         const cmds = help
           .filter(menu => menu.tags?.includes(tag))
-          .map(menu => menu.help.map(h => 
+          .map(menu => menu.help.map(h =>
             menuConfig.body
               .replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`)
               .replace(/%islimit/g, menu.limit ? '⭐' : '')
@@ -113,30 +102,16 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       (_, name) => String(replace[name])
     )
 
-    // xz xd
-    const templateButtons = [
+    await conn.sendMessage(m.chat, { react: { text: '🧃', key: m.key } })
+    await conn.sendMessage(
+      m.chat,
       {
-        index: 1,
-        urlButton: { displayText: "🌐 Website", url: "https://myapiadonix.vercel.app" }
+        text: text.trim(),
+        footer: 'Menú de comandos 📑',
+        headerType: 4
       },
-      {
-        index: 2,
-        quickReplyButton: { displayText: "🦀 Ser SubBot", id: _p + "code" }
-      }
-    ]
-
-    const templateMessage = {
-      templateMessage: {
-        hydratedTemplate: {
-          imageMessage: { url: bannerFinal },
-          hydratedContentText: text.trim(),
-          footerText: 'Menú de comandos 📑',
-          templateButtons: templateButtons
-        }
-      }
-    }
-
-    await conn.sendMessage(m.chat, templateMessage, { quoted: m })
+      { quoted: m }
+    )
 
   } catch (e) {
     console.error('❌ Error en el menú:', e)
