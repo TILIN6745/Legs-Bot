@@ -1,6 +1,8 @@
-import { totalmem, freemem } from 'os'
+import { totalmem, freemem, cpus } from 'os'
+import osu from 'node-os-utils'
 import { sizeFormatter } from 'human-readable'
 
+const cpu = osu.cpu
 const format = sizeFormatter({
   std: 'JEDEC',
   decimalPlaces: 2,
@@ -9,19 +11,22 @@ const format = sizeFormatter({
 })
 
 var handler = async (m, { conn }) => {
-  // Medir latencia aproximada
+  // Latencia aproximada
   let start = Date.now()
   if (conn.sendPresenceUpdate) await conn.sendPresenceUpdate('composing', m.chat)
   let latency = Date.now() - start
 
-  // Tiempo activo del bot
+  // Uptime
   let muptime = clockString(process.uptime() * 1000)
 
-  // Chats activos
+  // Chats
   let chats = Object.values(conn.chats).filter(chat => chat.isChats)
   let groups = Object.entries(conn.chats)
     .filter(([jid, chat]) => jid.endsWith('@g.us') && chat.isChats)
     .map(([jid]) => jid)
+
+  // Uso de CPU
+  let cpuUsage = await cpu.usage()  // porcentaje
 
   let texto = `
 ⚡ *Estado del Bot*
@@ -38,15 +43,18 @@ var handler = async (m, { conn }) => {
 
 🖥️ *Uso de RAM:*  
 → 💾 _${format(totalmem() - freemem())}_ / _${format(totalmem())}_
+
+🖥️ *Uso de CPU:*  
+→ 🔥 _${cpuUsage.toFixed(2)} %_
 `.trim()
 
-  if (m.react) m.react('✈️') // Reaccionar si tu librería lo soporta
+  if (m.react) m.react('✈️')
   conn.reply(m.chat, texto, m)
 }
 
-handler.help = ['t7']      // Ayuda y referencia
-handler.tags = ['info']    // Categoría
-handler.command = ['t7']   // Comando que se ejecuta con .t7
+handler.help = ['t7']
+handler.tags = ['info']
+handler.command = ['t7']
 
 export default handler
 
