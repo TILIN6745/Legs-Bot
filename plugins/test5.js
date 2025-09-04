@@ -30,10 +30,13 @@ var handler = async (m, { conn }) => {
   // Uso de CPU
   let cpuUsage = await cpu.usage()  // porcentaje
 
-  // Fecha y hora actual en formato solicitado
-  let now = new Date()
-  let fecha = now.toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' })
-  let hora = now.toLocaleTimeString('es-PE', { hour12: true, hour: '2-digit', minute: '2-digit' }) // solo hh:mm a.m / p.m
+  // Fecha y hora actual de Perú (sin mostrar la palabra Perú)
+  const now = new Date()
+  const opcionesHora = { hour12: true, hour: '2-digit', minute: '2-digit', timeZone: 'America/Lima' }
+  const opcionesFecha = { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'America/Lima' }
+
+  let fecha = now.toLocaleDateString('es-PE', opcionesFecha)
+  let hora = now.toLocaleTimeString('es-PE', opcionesHora)
 
   let texto = `
 ⚡ *Estado del Bot*
