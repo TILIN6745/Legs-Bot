@@ -32,7 +32,7 @@ const defaultMenu = {
 `,
 
   header: '> *_%category_*\n',
-  body: '🌾 •⟩ *%cmd* %islimit %isPremium',
+  body: '> 🌾 *%cmd* %islimit %isPremium',
   footer: '',
   after: `> 🐢 Creador › Ado`
 }
