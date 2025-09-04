@@ -1,25 +1,58 @@
-//[##] Creado por GianPoolS
-//[##] No quites los créditos
+import { totalmem, freemem } from 'os'
+import { sizeFormatter } from 'human-readable'
 
-import fetch from 'node-fetch'
+const format = sizeFormatter({
+  std: 'JEDEC',
+  decimalPlaces: 2,
+  keepTrailingZeroes: false,
+  render: (literal, symbol) => `${literal} ${symbol}B`
+})
 
-let handler = async(m, { conn, args, usedPrefix, command }) => {
+var handler = async (m, { conn }) => {
+  // Medir latencia aproximada
+  let start = Date.now()
+  if (conn.sendPresenceUpdate) await conn.sendPresenceUpdate('composing', m.chat)
+  let latency = Date.now() - start
 
-fetch('https://raw.githubusercontent.com/GianPoolS/Mis-Archivos/refs/heads/main/doraemon.txt?token=GHSAT0AAAAAADKFZKB2PQJL3DEWFBQNYEB62FTCLEA').then(res => res.text()).then(body => {
+  // Tiempo activo del bot
+  let muptime = clockString(process.uptime() * 1000)
 
-let randomkpop = body.split('\n')
+  // Chats activos
+  let chats = Object.values(conn.chats).filter(chat => chat.isChats)
+  let groups = Object.entries(conn.chats)
+    .filter(([jid, chat]) => jid.endsWith('@g.us') && chat.isChats)
+    .map(([jid]) => jid)
 
-let randomkpopx = randomkpop[Math.floor(Math.random() * randomkpop.length)]
-conn.sendMessage(m.chat, { react: { text: '😁', key: m.key }})
-conn.sendButton(m.chat, `💟 Doraemon 💌`, namebot, randomkpopx, [['🔄 Next 🔄', `/${command}`]], m)
+  let texto = `
+⚡ *Estado del Bot*
 
-})}
+📡 *Velocidad de Respuesta:*  
+→ _${latency} ms_
 
-handler.help = ['']
+⏱️ *Tiempo Activo:*  
+→ _${muptime}_
 
-handler.tags = ['']
+💬 *Chats Activos:*  
+→ 👤 _${chats.length}_ chats privados  
+→ 👥 _${groups.length}_ grupos
 
-handler.command = ['t5']
+🖥️ *Uso de RAM:*  
+→ 💾 _${format(totalmem() - freemem())}_ / _${format(totalmem())}_
+`.trim()
+
+  if (m.react) m.react('✈️') // Reaccionar si tu librería lo soporta
+  conn.reply(m.chat, texto, m)
+}
+
+handler.help = ['t7']      // Ayuda y referencia
+handler.tags = ['info']    // Categoría
+handler.command = ['t7']   // Comando que se ejecuta con .t7
 
 export default handler
 
+function clockString(ms) {
+  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
+  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
+  let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
+  return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')
+}
