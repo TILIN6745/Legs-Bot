@@ -41,7 +41,7 @@ let handler = async (m, { conn, text, args, usedPrefix = '.' }) => {
 };
 
 handler.help = ['anime <anime>'];
-handler.command = ['anime'];
+handler.command = ['anime', 'animesearch', 'searchanime', 'buscaranime', 'animebusqueda'];
 handler.tags = ["reacciones"];
 
 export default handler;
