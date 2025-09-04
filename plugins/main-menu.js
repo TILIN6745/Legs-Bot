@@ -1,46 +1,44 @@
 import fs from 'fs'
-import fetch from 'node-fetch'
 import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
 
 const tags = {
-  owner: '👑 > Propietario',
-  serbot: '🫟 > Subbots',
-  eco: '💸 > Economía',
-  downloader: '⬇️ > Descargas',
-  tools: '🛠️ > Herramientas',
-  efectos: '🍿 > Efectos',
-  info: 'ℹ️ > Información',
-  game: '🎮 > Juegos',
-  gacha: '🎲 > Gacha Anime',
-  reacciones: '💕 > Reacciones Anime',
-  group: '👥 > Grupos',
-  search: '🔎 > Buscadores',
-  sticker: '📌 > Stickers',
-  ia: '🤖 > IA',
-  channel: '📺 > Canales',
-  fun: '😂 > Diversión',
+  owner: '👑 ꨶ ㅤPropietario',
+  serbot: '🫟 ㅤSubbots',
+  eco: '💸 ㅤEconomía',
+  downloader: '⬇️ ㅤDescargas',
+  tools: '🛠️ ㅤHerramientas',
+  efectos: '🍿 ㅤEfectos',
+  info: 'ℹ️ ㅤInformación',
+  game: '🎮 ㅤJuegos',
+  gacha: '🎲 ㅤGacha Anime',
+  reacciones: '💕 ㅤReacciones Anime',
+  group: '👥 ㅤGrupos',
+  search: '🔎 ㅤBuscadores',
+  sticker: '📌 ㅤStickers',
+  ia: '🤖 ㅤIA',
+  channel: '📺 ㅤCanales',
+  fun: '😂 ㅤDiversión',
 }
 
 const defaultMenu = {
   before: `
-> 🥞 *Hola soy %botname* _( %tipo )_
+🧃ㅤׅㅤׄㅤHola soy *%botname* *_(%tipo)_*
 
-> 🌳 Hola *%name* 👋
-> 🧃 Fecha: \`%date\`
-> 🦀 Hora: \`%hour\`
-> ━━━━━━━━━━━━━━━
-`,  
-  header: '> *%category *\n',
-  body: '> 🌾 `%cmd` %islimit %isPremium\n',
-  footer: '\n',
-  after: '\n> 🥮 ㅤCreador › *Ado*'
+　ׅ🌳ㅤ *¿Cómo estas?* %name
+ 
+🥞  ׄ ְ *Fecha ›* %date
+🥮  ׄ ְ *Hora ›* %hour
+`,
+
+  header: '> *_%category_*\n',
+  body: '🌾 •⟩ *%cmd* %islimit %isPremium',
+  footer: '',
+  after: `> 🐢 Creador › Ado`
 }
 
 const handler = async (m, { conn, usedPrefix: _p }) => {
   try {
-    await m.react('🕓')
-
     const { exp, limit, level } = global.db.data.users[m.sender]
     const { min, xp, max } = xpRange(level, global.multiplier)
     const name = await conn.getName(m.sender)
@@ -59,11 +57,16 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         premium: p.premium,
       }))
 
+    let fkontak = { 
+      key: { remoteJid: "status@broadcast", participant: "0@s.whatsapp.net" },
+      message: { imageMessage: { caption: "🧃 Menu Completo", jpegThumbnail: Buffer.alloc(0) }}
+    }
+
     let nombreBot = global.namebot || 'Bot'
     let bannerFinal = 'https://iili.io/KJXN7yB.jpg'
+
     const botActual = conn.user?.jid?.split('@')[0]?.replace(/\D/g, '')
     const configPath = join('./JadiBots', botActual || '', 'config.json')
-
     if (botActual && fs.existsSync(configPath)) {
       try {
         const config = JSON.parse(fs.readFileSync(configPath))
@@ -85,7 +88,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
               .replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`)
               .replace(/%islimit/g, menu.limit ? '⭐' : '')
               .replace(/%isPremium/g, menu.premium ? '💎' : '')
-          ).join('')).join('\n')
+          ).join('\n')).join('\n')
         return [menuConfig.header.replace(/%category/g, tags[tag]), cmds, menuConfig.footer].join('\n')
       }),
       menuConfig.after
@@ -116,55 +119,38 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       (_, name) => String(replace[name])
     )
 
-    const docTypes = [
-      'pdf',
-      'zip',
-      'vnd.openxmlformats-officedocument.presentationml.presentation',
-      'vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'vnd.openxmlformats-officedocument.wordprocessingml.document'
-    ]
-    const document = docTypes[Math.floor(Math.random() * docTypes.length)]
-
-    const res = await fetch(bannerFinal)
-    const buffer = await res.buffer()
-
-    const buttonMessage = {
-      mimetype: `application/${document}`,
-      fileName: `「 📑 Menú de comandos 」`,
-      fileLength: 9999999999999,
-      pageCount: 200,
-      contextInfo: {
-        forwardingScore: 200,
-        isForwarded: true,
-        externalAdReply: {
-          mediaUrl: bannerFinal,
-          mediaType: 1,
-          previewType: 'pdf',
-          title: nombreBot,
-          body: "> 🐢 *Usa los comandos a tu gusto*",
-          thumbnail: buffer,
-          sourceUrl: "https://myapiadonix.vercel.app",
-          renderLargerThumbnail: true
+    await conn.sendMessage(m.chat, { react: { text: '🧃', key: m.key } })
+    await conn.sendMessage(
+      m.chat,
+      { 
+        text: text.trim(),
+        footer: 'Menú de comandos 📑',
+        headerType: 4,
+        contextInfo: {
+          externalAdReply: {
+            title: nombreBot,
+            body: "",
+            thumbnailUrl: bannerFinal,
+            sourceUrl: "myapiadonix.vercel.app",
+            mediaType: 1,
+            renderLargerThumbnail: true
+          },
+          mentionedJid: conn.parseMention(text)
         }
       },
-      caption: text,
-      footer: nombreBot,
-      headerType: 6
-    }
-
-    await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
-    await m.react('✅')
-
+      { quoted: fkontak }
+    )
   } catch (e) {
     console.error('❌ Error en el menú:', e)
-    await m.react('❌')
-    await conn.reply(m.chat, '❎ Ocurrió un error al mostrar el menú.', m)
+    conn.reply(m.chat, '❎ Ocurrió un error al mostrar el menú.', m)
   }
 }
 
-handler.command = ['m','menu','help','ayuda']
+handler.command = ['m', 'menu', 'help', 'ayuda']
+handler.register = false
 export default handler
 
+// Utilidades
 const more = String.fromCharCode(8206)
 const readMore = more.repeat(4001)
 
