@@ -26,15 +26,14 @@ const defaultMenu = {
 🧃ㅤׅㅤׄㅤHola soy *%botname* *_(%tipo)_*
 
 　ׅ🌳ㅤ *¿Cómo estas?* %name
- 
-🥞  ׄ ְ *Fecha ›* %date
+
+🌾  ׄ ְ *Fecha ›* %date
 🥮  ׄ ְ *Hora ›* %hour
 `,
-
   header: '> *%category*\n',
-  body: '> 🌾 *%cmd* %islimit %isPremium',
+  body: '> 🥞 *%cmd* %islimit %isPremium',
   footer: '',
-  after: `> 🐢 Creador › Ado`
+  after: '> 🐢 Creador › Ado'
 }
 
 const handler = async (m, { conn, usedPrefix: _p }) => {
@@ -136,7 +135,10 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
             renderLargerThumbnail: true
           },
           mentionedJid: conn.parseMention(text)
-        }
+        },
+        buttons: [
+          { buttonId: _p + 'code', buttonText: { displayText: '🦀 Ser SubBot' }, type: 1 }
+        ]
       },
       { quoted: fkontak }
     )
