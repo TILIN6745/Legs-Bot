@@ -60,7 +60,7 @@ let handler = async (m, { conn, command }) => {
 }
 
 handler.help = ['blackpink']
-handler.tags = ['']
+handler.tags = ['meme']
 handler.command = ['blackpink','bp']
 
 export default handler
