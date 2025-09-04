@@ -18,7 +18,9 @@ var handler = async (m, { conn }) => {
   let latency = (performance.now() - start).toFixed(4) // Ej: 0.9999 ms
 
   // Uptime
-  let muptime = clockString(process.uptime() * 1000)
+  let totalMs = process.uptime() * 1000
+  let muptime = clockString(totalMs)
+  let dias = Math.floor(totalMs / 86400000) // 1 día = 86400000 ms
 
   // Chats
   let chats = Object.values(conn.chats).filter(chat => chat.isChats)
@@ -29,6 +31,11 @@ var handler = async (m, { conn }) => {
   // Uso de CPU
   let cpuUsage = await cpu.usage()  // porcentaje
 
+  // Hora y fecha actual
+  let now = new Date()
+  let hora = now.toLocaleTimeString('es-PE', { hour12: false })
+  let fecha = now.toLocaleDateString('es-PE')
+
   let texto = `
 ⚡ *Estado del Bot*
 
@@ -36,7 +43,7 @@ var handler = async (m, { conn }) => {
 → _${latency} ms_
 
 ⏱️ *Tiempo Activo:*  
-→ _${muptime}_
+→ _${dias}d ${muptime}_
 
 💬 *Chats Activos:*  
 → 👤 _${chats.length}_ chats privados  
@@ -47,15 +54,18 @@ var handler = async (m, { conn }) => {
 
 ⚙️ *Uso de CPU:*  
 → _${cpuUsage.toFixed(2)} %_
+
+🕒 *Hora del Bot:* ${hora}  
+📅 *Fecha:* ${fecha}
 `.trim()
 
   if (m.react) m.react('✈️')
   conn.reply(m.chat, texto, m)
 }
 
-handler.help = ['speed2']     // ayuda
-handler.tags = ['info']       // categoría
-handler.command = ['speed2']  // comando que ejecuta .speed2
+handler.help = ['speed2']
+handler.tags = ['info']
+handler.command = ['speed2']
 
 export default handler
 
