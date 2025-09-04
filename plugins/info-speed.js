@@ -66,9 +66,9 @@ var handler = async (m, { conn }) => {
   conn.reply(m.chat, texto, m)
 }
 
-handler.help = ['speed2']
+handler.help = ['speed']
 handler.tags = ['info']
-handler.command = ['speed2']
+handler.command = ['speed']
 
 export default handler
 
