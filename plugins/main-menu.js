@@ -113,25 +113,30 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       (_, name) => String(replace[name])
     )
 
-    const buttons = [
+    // xz xd
+    const templateButtons = [
       {
-        buttonId: _p + 'code',
-        buttonText: { displayText: '🦀 Ser SubBot' },
-        type: 1
+        index: 1,
+        urlButton: { displayText: "🌐 Website", url: "https://myapiadonix.vercel.app" }
+      },
+      {
+        index: 2,
+        quickReplyButton: { displayText: "🦀 Ser SubBot", id: _p + "code" }
       }
     ]
 
-    await conn.sendMessage(
-      m.chat,
-      {
-        image: { url: bannerFinal },
-        caption: text.trim(),
-        footer: 'Menú de comandos 📑',
-        buttons: buttons,
-        headerType: 4
-      },
-      { quoted: m }
-    )
+    const templateMessage = {
+      templateMessage: {
+        hydratedTemplate: {
+          imageMessage: { url: bannerFinal },
+          hydratedContentText: text.trim(),
+          footerText: 'Menú de comandos 📑',
+          templateButtons: templateButtons
+        }
+      }
+    }
+
+    await conn.sendMessage(m.chat, templateMessage, { quoted: m })
 
   } catch (e) {
     console.error('❌ Error en el menú:', e)
