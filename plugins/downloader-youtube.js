@@ -33,7 +33,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     
     const infoMessage = 
-      `🫟*<${title || 'Desconocido'}>*\n\n` +
+      `🫟 *<${title || 'Desconocido'}>*\n\n` +
       `> ❄ Canal » *${canal}*\n` +
       `> 🪸 Vistas » *${formattedViews}*\n` +
       `> 🌤 Duración » *${timestamp || 'Desconocido'}*\n` +
@@ -70,7 +70,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     const format = isAudio ? 'audio' : 'video'
     const apiUrl = `https://myapiadonix.vercel.app/download/yt?url=${encodeURIComponent(url)}&format=${format}`
     
-    await conn.sendMessage(m.chat, { react: { text: '🕓', key: m.key } })
+    await conn.sendMessage(m.chat, { react: { text: '🕕', key: m.key } })
 
     const res = await fetch(apiUrl)
     const json = await res.json()
@@ -84,8 +84,8 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } })
 
     const contactName = isAudio 
-      ? "🌾 𝗬𝗢𝗨𝗧𝗨𝗕𝗘 𝗔𝗨𝗗𝗜𝗢" 
-      : "🐢 𝗬𝗢𝗨𝗧𝗨𝗕𝗘 𝗩𝗜𝗗𝗘𝗢"
+      ? "🌾 𝗬𝗧 𝗔𝗨𝗗𝗜𝗢" 
+      : "🐢 𝗬𝗧 𝗩𝗜𝗗𝗘𝗢"
 
     const fkontak = {
       key: { fromMe: false, participant: "0@s.whatsapp.net" },
@@ -98,14 +98,15 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       await conn.sendMessage(m.chat, {
         audio: { url: downloadUrl },
         mimetype: 'audio/mpeg',
-        fileName: `${title}.mp3`
+        fileName: `${title}.mp3`,
+        ptt: true
       }, { quoted: fkontak })
     } else if (isVideo) {
       await conn.sendMessage(m.chat, {
         video: { url: downloadUrl },
         mimetype: 'video/mp4',
         fileName: `${title}.mp4`,
-        caption: '⟩ Descarga completa, aquí tienes tu video'
+        caption: '» Descarga completa, aquí tienes tu video.'
       }, { quoted: fkontak })
     }
 
