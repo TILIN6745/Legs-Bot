@@ -13,7 +13,7 @@
 <div class="seccion">
 <span class="subtitulo"><span class="emoji-move">🍃</span> Resumen General</span><br>
 Michi-WaBot es un bot sencillo y confiable, diseñado para ayudar a todos. El proyecto se basa en la colaboración y el respeto.<br>
-<span style="font-size:1.5em;" class="emoji-spin">🌱</span><span class="emoji-move">🌍</span>
+<span style="font-size:1.5em;" class="emoji-spin">🌱</span><span class="emoji-move"></span>
 </div>
 
 ---
