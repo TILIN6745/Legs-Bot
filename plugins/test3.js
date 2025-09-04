@@ -1,3 +1,8 @@
+//[##] Creado por Ado-rgb
+//[##] Editado por GianPoolS
+//[##] Gracias a Pin anterior
+//[##] No quites los créditos
+
 import axios from 'axios';
 import baileys from '@whiskeysockets/baileys';
 import cheerio from 'cheerio';
