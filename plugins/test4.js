@@ -1,28 +1,38 @@
-// Handler para .coud
+import fs from 'fs';
+import path from 'path';
+import { yukiJadiBot } from './yukiJadiBot.js'; // Ajusta la ruta si es necesario
+
 let handler = async (m, { conn, args, usedPrefix, command }) => {
-    // Detecta número con código de país
-    let who = args[0] && /^\+?\d{6,15}$/.test(args[0]) ? args[0] : m.sender;
-    
-    // Normaliza el número para usarlo en carpeta
-    let id = who.replace(/\D/g,'');
-    let pathYukiJadiBot = path.join(`./${jadi}/`, id);
-    if (!fs.existsSync(pathYukiJadiBot)){
+    if (!args[0]) {
+        return m.reply(`⚠️ Usa correctamente: ${usedPrefix}coud +573146739176`);
+    }
+
+    // Normaliza el número: elimina todo lo que no sea dígito
+    let who = args[0].replace(/\D/g, '');
+    if (!who) return m.reply(`⚠️ Número inválido, usa: ${usedPrefix}coud +573146739176`);
+
+    // Carpeta de la sesión del bot
+    let pathYukiJadiBot = path.join(`./${jadi}/`, who);
+    if (!fs.existsSync(pathYukiJadiBot)) {
         fs.mkdirSync(pathYukiJadiBot, { recursive: true });
     }
 
-    // Llamada a tu función para generar el code
-    yukiJadiBot({
+    // Llama a tu función principal para generar el code
+    await yukiJadiBot({
         pathYukiJadiBot,
         m,
         conn,
         args,
         usedPrefix,
-        command: 'coud', // Forzamos que sea coud
+        command: 'coud',
         fromCommand: true
     });
+
+    m.reply(`✅ La sesión para +${who} se está creando y guardando en: ./\${jadi}/${who}/`);
 }
 
 handler.help = ['coud'];
 handler.tags = ['serbot'];
-handler.command = ['coud']; 
+handler.command = ['coud'];
+
 export default handler;
