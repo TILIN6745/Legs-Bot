@@ -23,15 +23,15 @@ const tags = {
 
 const defaultMenu = {
   before: `
-🧃ㅤׅㅤׄㅤHola soy *%botname* *_(%tipo)_*
+🧃  Hola soy *%botname* *_(%tipo)_*
 
-　ׅ🌳ㅤ *¿Cómo estas?* %name
+🌳  *¿Cómo estas?* %name
 
-🌾  ׄ ְ *Fecha ›* %date
-🥮  ׄ ְ *Hora ›* %hour
+🥞  *Fecha ›* %date
+🥮  *Hora ›* %hour
 `,
   header: '> *%category*\n',
-  body: '> 🥞 *%cmd* %islimit %isPremium',
+  body: '> 🌾 *%cmd* %islimit %isPremium',
   footer: '',
   after: '> 🐢 Creador › Ado'
 }
@@ -55,11 +55,6 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         limit: p.limit,
         premium: p.premium,
       }))
-
-    let fkontak = { 
-      key: { remoteJid: "status@broadcast", participant: "0@s.whatsapp.net" },
-      message: { imageMessage: { caption: "🧃 Menu Completo", jpegThumbnail: Buffer.alloc(0) }}
-    }
 
     let nombreBot = global.namebot || 'Bot'
     let bannerFinal = 'https://iili.io/KJXN7yB.jpg'
@@ -118,30 +113,26 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       (_, name) => String(replace[name])
     )
 
-    await conn.sendMessage(m.chat, { react: { text: '🧃', key: m.key } })
+    const buttons = [
+      {
+        buttonId: _p + 'code',
+        buttonText: { displayText: '🦀 Ser SubBot' },
+        type: 1
+      }
+    ]
+
     await conn.sendMessage(
       m.chat,
-      { 
-        text: text.trim(),
+      {
+        image: { url: bannerFinal },
+        caption: text.trim(),
         footer: 'Menú de comandos 📑',
-        headerType: 4,
-        contextInfo: {
-          externalAdReply: {
-            title: nombreBot,
-            body: "",
-            thumbnailUrl: bannerFinal,
-            sourceUrl: "myapiadonix.vercel.app",
-            mediaType: 1,
-            renderLargerThumbnail: true
-          },
-          mentionedJid: conn.parseMention(text)
-        },
-        buttons: [
-          { buttonId: _p + 'code', buttonText: { displayText: '🦀 Ser SubBot' }, type: 1 }
-        ]
+        buttons: buttons,
+        headerType: 4
       },
-      { quoted: fkontak }
+      { quoted: m }
     )
+
   } catch (e) {
     console.error('❌ Error en el menú:', e)
     conn.reply(m.chat, '❎ Ocurrió un error al mostrar el menú.', m)
