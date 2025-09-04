@@ -4,35 +4,35 @@ import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
 
 const tags = {
-  owner: '👑 ꨶ ㅤPropietario',
-  serbot: '🫟 ㅤSubbots',
-  eco: '💸 ㅤEconomía',
-  downloader: '⬇️ ㅤDescargas',
-  tools: '🛠️ ㅤHerramientas',
-  efectos: '🍿 ㅤEfectos',
-  info: 'ℹ️ ㅤInformación',
-  game: '🎮 ㅤJuegos',
-  gacha: '🎲 ㅤGacha Anime',
-  reacciones: '💕 ㅤReacciones Anime',
-  group: '👥 ㅤGrupos',
-  search: '🔎 ㅤBuscadores',
-  sticker: '📌 ㅤStickers',
-  ia: '🤖 ㅤIA',
-  channel: '📺 ㅤCanales',
-  fun: '😂 ㅤDiversión',
+  owner: '👑 > Propietario',
+  serbot: '🫟 > Subbots',
+  eco: '💸 > Economía',
+  downloader: '⬇️ > Descargas',
+  tools: '🛠️ > Herramientas',
+  efectos: '🍿 > Efectos',
+  info: 'ℹ️ > Información',
+  game: '🎮 > Juegos',
+  gacha: '🎲 > Gacha Anime',
+  reacciones: '💕 > Reacciones Anime',
+  group: '👥 > Grupos',
+  search: '🔎 > Buscadores',
+  sticker: '📌 > Stickers',
+  ia: '🤖 > IA',
+  channel: '📺 > Canales',
+  fun: '😂 > Diversión',
 }
 
 const defaultMenu = {
   before: `
-🥞 Hola soy *%botname* _( %tipo )_
+🥞 *Hola soy %botname* _( %tipo )_
 
 🌳 Hola *%name* 👋
-🧃 Fecha: %date
-🦀 Hora: %hour
+🧃 Fecha: \`%date\`
+🦀 Hora: \`%hour\`
 ━━━━━━━━━━━━━━━
 `,  
-  header: '> *%category*\n',
-  body: '> 🌾 %cmd %islimit %isPremium\n',
+  header: '>* %category *\n',
+  body: '> 🌾 `%cmd` %islimit %isPremium\n',
   footer: '\n',
   after: '\n🥮 ㅤCreador › Ado'
 }
@@ -116,7 +116,6 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       (_, name) => String(replace[name])
     )
 
-    
     const docTypes = [
       'pdf',
       'zip',
@@ -130,29 +129,29 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
     const buffer = await res.buffer()
 
     const buttonMessage = {
-  document: Buffer.from("Menu"), 
-  mimetype: `application/${document}`,
-  fileName: `「 📑 Menú de comandos 」`,
-  fileLength: 9999999999999,
-  pageCount: 200,
-  contextInfo: {
-    forwardingScore: 200,
-    isForwarded: true,
-    externalAdReply: {
-      mediaUrl: bannerFinal,
-      mediaType: 1, 
-      previewType: 'pdf',
-      title: nombreBot,
-      body: "🐢 Usa los comandos a tu gusto",
-      thumbnail: buffer,
-      sourceUrl: "https://myapiadonix.vercel.app",
-      renderLargerThumbnail: true 
+      document: Buffer.from("Menu"), 
+      mimetype: `application/${document}`,
+      fileName: `「 📑 Menú de comandos 」`,
+      fileLength: 9999999999999,
+      pageCount: 200,
+      contextInfo: {
+        forwardingScore: 200,
+        isForwarded: true,
+        externalAdReply: {
+          mediaUrl: bannerFinal,
+          mediaType: 1, 
+          previewType: 'pdf',
+          title: nombreBot,
+          body: "🐢 Usa los comandos a tu gusto",
+          thumbnail: buffer,
+          sourceUrl: "https://myapiadonix.vercel.app",
+          renderLargerThumbnail: true 
+        }
+      },
+      caption: text,
+      footer: nombreBot,
+      headerType: 6
     }
-  },
-  caption: text,
-  footer: nombreBot,
-  headerType: 6
-}
 
     await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
     await m.react('✅')
