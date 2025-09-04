@@ -9,9 +9,10 @@ const search = "/resource/BaseSearchResource/get/";
 const headers = {
   'accept': 'application/json, text/javascript, /, q=0.01',
   'referer': 'https://www.pinterest.com/',
-  'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+  'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
   'x-app-version': 'a9522f',
   'x-pinterest-appstate': 'active',
+  'x-pinterest-pws-handler': 'www/[username]/[slug].js',
   'x-requested-with': 'XMLHttpRequest'
 };
 
@@ -32,33 +33,33 @@ async function buscarPinterest(query) {
     const cookies = await obtenerCookies();
     if (!cookies) return { status: false, message: "❌ No se pudieron obtener las cookies" };
 
-    const params = {  
-      source_url: `/search/pins/?q=${query}`,  
-      data: JSON.stringify({  
-        options: { isPrefetch: false, query, scope: "pins", bookmarks: [""], page_size: 10 },  
-        context: {}  
-      }),  
-      _: Date.now()  
-    };  
+    const params = {
+      source_url: `/search/pins/?q=${query}`,
+      data: JSON.stringify({
+        options: { isPrefetch: false, query, scope: "pins", bookmarks: [""], page_size: 10 },
+        context: {}
+      }),
+      _: Date.now()
+    };
 
-    const { data } = await axios.get(`${base}${search}`, { headers: { ...headers, 'cookie': cookies }, params });  
-    const resultados = data.resource_response.data.results.filter(v => v.images?.orig);  
-    if (resultados.length === 0) return { status: false, message: `⚠️ No se encontraron resultados para: ${query}` };  
+    const { data } = await axios.get(`${base}${search}`, { headers: { ...headers, 'cookie': cookies }, params });
+    const resultados = data.resource_response.data.results.filter(v => v.images?.orig);
+    if (resultados.length === 0) return { status: false, message: `⚠️ No se encontraron resultados para: ${query}` };
 
-    return {  
-      status: true,  
-      pins: resultados.map(pin => ({  
-        id: pin.id,  
-        title: pin.title || "Sin título",  
-        description: pin.description || "Sin descripción",  
-        pin_url: `https://pinterest.com/pin/${pin.id}`,  
-        image: pin.images.orig.url,  
-        uploader: {  
-          username: pin.pinner.username,  
-          full_name: pin.pinner.full_name,  
-          profile_url: `https://pinterest.com/${pin.pinner.username}`  
-        }  
-      }))  
+    return {
+      status: true,
+      pins: resultados.map(pin => ({
+        id: pin.id,
+        title: pin.title || "Sin título",
+        description: pin.description || "Sin descripción",
+        pin_url: `https://pinterest.com/pin/${pin.id}`,
+        image: pin.images.orig.url,
+        uploader: {
+          username: pin.pinner.username,
+          full_name: pin.pinner.full_name,
+          profile_url: `https://pinterest.com/${pin.pinner.username}`
+        }
+      }))
     };
 
   } catch {
@@ -67,9 +68,9 @@ async function buscarPinterest(query) {
 }
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) return m.reply(`🌾 \`Ejemplo:\` ${usedPrefix + command} gatito`);
+  if (!text) return m.reply(`🐦‍🔥 Ejemplo: ${usedPrefix + command} gatito`);
 
-  await conn.sendMessage(m.chat, { react: { text: '🦀', key: m.key } });
+  await m.reply('🪸 Cargando resultados');
 
   async function crearImagen(url) {
     const { imageMessage } = await generateWAMessageContent({ image: { url } }, { upload: conn.waUploadToServer });
@@ -89,34 +90,43 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   let pins = resultado.pins.slice(0, 10);
   mezclarArray(pins);
 
-  let cards = [];
+  let tarjetas = [];
   let i = 1;
   for (let pin of pins) {
     let imageUrl = pin.image;
-    cards.push({
-      header: { type: 4, imageMessage: await crearImagen(imageUrl) }, // type 4 = image
-      title: `💚 Imagen ${i++}`,
-      description: `✧ *Título:* ${pin.title}\n » *Descripción:* ${pin.description}\n› *Autor:* ${pin.uploader.full_name} (@${pin.uploader.username})`,
-      rowId: `url_${pin.id}`, 
-      buttonText: "🦖 Ver en Pinterest",
-      url: pin.pin_url 
+    tarjetas.push({
+      body: proto.Message.InteractiveMessage.Body.fromObject({
+        text: `✧ *Título:* ${pin.title}\n » *Descripción:* ${pin.description}\n› *Autor:* ${pin.uploader.full_name} (@${pin.uploader.username})\n✦ Link:* ${pin.pin_url}`
+      }),
+      footer: proto.Message.InteractiveMessage.Footer.fromObject({ text: '' }),
+      header: proto.Message.InteractiveMessage.Header.fromObject({
+        title: `💚 Imagen ${i++}`,
+        hasMediaAttachment: true,
+        imageMessage: await crearImagen(imageUrl)
+      }),
+      nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.fromObject({
+        buttons: [
+          { "name": "cta_url", "buttonParamsJson": `{"display_text":"🦖 𝗩𝗲𝗿 𝗲𝗻 𝗽𝗶𝗻𝘁𝗲𝗿𝗲𝘀𝘁","url":"${pin.pin_url}"}` }
+        ]
+      })
     });
   }
 
-  const message = generateWAMessageFromContent(m.chat, {
-    templateMessage: {
-      hydratedTemplate: {
-        hydratedContentText: "🥞 Búsqueda completada",
-        locationMessage: { jpegThumbnail: Buffer.alloc(0) },
-        hydratedButtons: [],
-        hydratedTemplateId: "",
-        contextInfo: { mentionedJid: [] },
-        listMessage: { title: "Pinterest", description: "Resultados", buttonText: "Selecciona una imagen", sections: [{ title: "Resultados", rows: cards }] }
+  const botMensaje = generateWAMessageFromContent(m.chat, {
+    viewOnceMessage: {
+      message: {
+        messageContextInfo: { deviceListMetadata: {}, deviceListMetadataVersion: 2 },
+        interactiveMessage: proto.Message.InteractiveMessage.fromObject({
+          body: proto.Message.InteractiveMessage.Body.create({ text: "🥞 Búsqueda completada" }),
+          footer: proto.Message.InteractiveMessage.Footer.create({ text: '' }),
+          header: proto.Message.InteractiveMessage.Header.create({ hasMediaAttachment: false }),
+          carouselMessage: proto.Message.InteractiveMessage.CarouselMessage.fromObject({ cards: [...tarjetas] })
+        })
       }
     }
   }, {});
 
-  await conn.relayMessage(m.chat, message.message, { messageId: message.key.id });
+  await conn.relayMessage(m.chat, botMensaje.message, { messageId: botMensaje.key.id });
 };
 
 handler.help = ['pinterest'];
