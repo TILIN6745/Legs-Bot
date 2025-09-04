@@ -129,7 +129,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
         contextInfo: {
           externalAdReply: {
             title: "",
-            body: defaultMenu,
+            body: "🌵 Hola soy *%botname* *_(%tipo)_*　ׅ🌳\n *¿Cómo estas?* %name\n\n🥞  ׄ ְ *Fecha ›* %date\n🥮  ׄ ְ *Hora ›* %hour\n\n\n%category\n%cmd\nCreador Ado",
             thumbnailUrl: bannerFinal,
             sourceUrl: "myapiadonix.vercel.app",
             mediaType: 1,
