@@ -30,10 +30,10 @@ var handler = async (m, { conn }) => {
   // Uso de CPU
   let cpuUsage = await cpu.usage()  // porcentaje
 
-  // Hora y fecha actual en formato visual
+  // Fecha y hora actual en formato solicitado
   let now = new Date()
-  let hora = now.toLocaleTimeString('es-PE', { hour12: true }) // 12h con a.m / p.m
   let fecha = now.toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  let hora = now.toLocaleTimeString('es-PE', { hour12: true, hour: '2-digit', minute: '2-digit' }) // solo hh:mm a.m / p.m
 
   let texto = `
 ⚡ *Estado del Bot*
@@ -55,8 +55,8 @@ var handler = async (m, { conn }) => {
 → _${cpuUsage.toFixed(2)} %_
 
 📊 Fecha y Hora
-→ ${hora}
 → ${fecha}
+→ ${hora}
 `.trim()
 
   if (m.react) m.react('✈️')
