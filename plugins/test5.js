@@ -1,4 +1,4 @@
-import { totalmem, freemem, cpus } from 'os'
+import { totalmem, freemem } from 'os'
 import osu from 'node-os-utils'
 import { sizeFormatter } from 'human-readable'
 
@@ -44,8 +44,8 @@ var handler = async (m, { conn }) => {
 🖥️ *Uso de RAM:*  
 → 💾 _${format(totalmem() - freemem())}_ / _${format(totalmem())}_
 
-🖥️ *Uso de CPU:*  
-→ 🔥 _${cpuUsage.toFixed(2)} %_
+⚙️ *Uso de CPU:*  
+→ _${cpuUsage.toFixed(2)} %_
 `.trim()
 
   if (m.react) m.react('✈️')
