@@ -31,7 +31,7 @@ const defaultMenu = {
 🥮  ׄ ְ *Hora ›* %hour
 `,
 
-  header: '> *_%category_*\n',
+  header: '> *%category*\n',
   body: '> 🌾 *%cmd* %islimit %isPremium',
   footer: '',
   after: `> 🐢 Creador › Ado`
