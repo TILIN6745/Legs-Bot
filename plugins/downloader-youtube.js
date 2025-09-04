@@ -3,15 +3,13 @@ import yts from 'yt-search'
 
 const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]{11})/
 
-const handler = async (m, { conn, text, usedPrefix, command }) => {
+const handler = async (m, { conn, text, command }) => {
   try {
     if (!text?.trim()) {
       return conn.reply(m.chat, "🎋 Por favor, ingresa el nombre de la música a descargar.", m)
     }
 
     let url, videoId, video
-
-    
     const isUrl = youtubeRegexID.test(text)
     
     if (isUrl) {
@@ -31,7 +29,6 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     const formattedViews = formatViews(views)
     const canal = author?.name || 'Desconocido'
 
-    
     const infoMessage = 
       `🫟 *<${title || 'Desconocido'}>*\n\n` +
       `> ❄ Canal » *${canal}*\n` +
@@ -40,26 +37,12 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       `> 🍰 Publicado » *${ago || 'Desconocido'}*\n` +
       `> 🐛 Link » ${url}`
 
-    const thumb = await conn.getFile(thumbnail).catch(() => null)
-
-    const externalAdReply = {
-      contextInfo: {
-        externalAdReply: {
-          title: title || 'YouTube Download',
-          body: timestamp || '',
-          mediaType: 1,
-          previewType: 0,
-          mediaUrl: url,
-          sourceUrl: url,
-          thumbnail: thumb?.data || null,
-          renderLargerThumbnail: true
-        }
-      }
-    }
-
-    await conn.reply(m.chat, infoMessage, m, externalAdReply)
-
     
+    await conn.sendMessage(m.chat, {
+      image: { url: thumbnail || '' },
+      caption: infoMessage
+    }, { quoted: m })
+
     const isAudio = ['play', 'yta', 'ytmp3', 'playaudio'].includes(command)
     const isVideo = ['play2', 'ytv', 'ytmp4', 'mp4'].includes(command)
 
@@ -69,9 +52,6 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     const format = isAudio ? 'audio' : 'video'
     const apiUrl = `https://myapiadonix.vercel.app/download/yt?url=${encodeURIComponent(url)}&format=${format}`
-    
-    await conn.sendMessage(m.chat, { react: { text: '🕕', key: m.key } })
-
     const res = await fetch(apiUrl)
     const json = await res.json()
 
@@ -81,14 +61,12 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     const downloadUrl = json.data.url
 
-    await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } })
-
     const contactName = isAudio 
       ? "🌾 𝗬𝗧 𝗔𝗨𝗗𝗜𝗢" 
       : "🐢 𝗬𝗧 𝗩𝗜𝗗𝗘𝗢"
 
     const fkontak = {
-      key: { fromMe: false, participant: "0@s.whatsapp.net" },
+      key: { fromMe: false, participant: "50493732693@s.whatsapp.net" },
       message: {
         contactMessage: { displayName: contactName }
       }
