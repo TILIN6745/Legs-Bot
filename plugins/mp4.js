@@ -1,121 +1,162 @@
-//--> Hecho por Ado-rgb (github.com/Ado-rgb)
-// •|• No quites créditos we
-
-import fetch from 'node-fetch'
-import yts from 'yt-search'
 import fs from 'fs'
-import path from 'path'
+import { join } from 'path'
+import { xpRange } from '../lib/levelling.js'
 
-let handler = async (m, { conn, args, command, usedPrefix }) => {
-  if (!args[0]) return m.reply(`⚠️ Uso correcto: ${usedPrefix + command} <enlace o nombre>`)
+const tags = {
+  owner: '👑 ꨶㅤPropietario',
+  serbot: '🫟 Subbots',
+  eco: '💸ㅤEconomía',
+  downloader: '🪴 Descargas',
+  tools: '🛠️ㅤHerramientas',
+  efectos: '🍿 Efectos',
+  info: 'ℹ️ㅤInformación',
+  game: '🎮 Juegos',
+  gacha: '🎲 Gacha Anime',
+  reacciones: '💕 Reacciones Anime',
+  group: '👥 Grupos',
+  search: '🔎 Buscadores',
+  sticker: '📌 Stickers',
+  ia: '🤖 IA',
+  channel: '📺 Canales',
+  fun: '😂 Diversión',
+}
 
+const defaultMenu = {
+  before: `
+🌵 Hola soy *%botname* *_(%tipo)_*
+
+　ׅ🌳ㅤ *¿Cómo estas?* %name
+ 
+🥞  ׄ ְ *Fecha ›* %date
+🥮  ׄ ְ *Hora ›* %hour
+`,
+
+  header: '> *%category*\n',
+  body: '> 🍿 *%cmd* %islimit %isPremium',
+  footer: '',
+  after: `> 🌾 Creador › Ado`
+}
+
+const handler = async (m, { conn, usedPrefix: _p }) => {
   try {
-    await m.react('🕓')
+    const { exp, limit, level } = global.db.data.users[m.sender]
+    const { min, xp, max } = xpRange(level, global.multiplier)
+    const name = await conn.getName(m.sender)
 
-    
-    const botActual = conn.user?.jid?.split('@')[0].replace(/\D/g, '')
-    const configPath = path.join('./JadiBots', botActual, 'config.json')
-    let nombreBot = global.namebot || '⎯⎯⎯⎯⎯⎯ Bot Principal ⎯⎯⎯⎯⎯⎯'
-    if (fs.existsSync(configPath)) {
+    const d = new Date(Date.now() + 3600000)
+    const date = d.toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' })
+    const hour = d.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit', hour12: true })
+
+    const help = Object.values(global.plugins)
+      .filter(p => !p.disabled)
+      .map(p => ({
+        help: Array.isArray(p.help) ? p.help : [p.help],
+        tags: Array.isArray(p.tags) ? p.tags : [p.tags],
+        prefix: 'customPrefix' in p,
+        limit: p.limit,
+        premium: p.premium,
+      }))
+
+    let fkontak = { 
+      key: { remoteJid: "status@broadcast", participant: "0@s.whatsapp.net" },
+      message: { imageMessage: { caption: "🧃 Menu Completo", jpegThumbnail: Buffer.alloc(0) }}
+    }
+
+    let nombreBot = global.namebot || 'Bot'
+    let bannerFinal = 'https://iili.io/KJXN7yB.jpg'
+
+    const botActual = conn.user?.jid?.split('@')[0]?.replace(/\D/g, '')
+    const configPath = join('./JadiBots', botActual || '', 'config.json')
+    if (botActual && fs.existsSync(configPath)) {
       try {
-        const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'))
+        const config = JSON.parse(fs.readFileSync(configPath))
         if (config.name) nombreBot = config.name
+        if (config.banner) bannerFinal = config.banner
       } catch {}
     }
 
-    
-    let url = args[0]
-    let videoInfo = null
+    const tipo = conn.user?.jid === global.conn?.user?.jid ? 'Principal' : 'SubBot'
+    const menuConfig = conn.menu || defaultMenu
 
-    if (!url.includes('youtube.com') && !url.includes('youtu.be')) {
-      let search = await yts(args.join(' '))
-      if (!search.videos?.length) return m.reply('⚠️ No se encontraron resultados.')
-      videoInfo = search.videos[0]
-      url = videoInfo.url
-    } else {
-      let id = url.split('v=')[1]?.split('&')[0] || url.split('/').pop()
-      let search = await yts({ videoId: id })
-      if (search?.title) videoInfo = search
+    const _text = [
+      menuConfig.before,
+      ...Object.keys(tags).sort().map(tag => {
+        const cmds = help
+          .filter(menu => menu.tags?.includes(tag))
+          .map(menu => menu.help.map(h => 
+            menuConfig.body
+              .replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`)
+              .replace(/%islimit/g, menu.limit ? '⭐' : '')
+              .replace(/%isPremium/g, menu.premium ? '💎' : '')
+          ).join('\n')).join('\n')
+        return [menuConfig.header.replace(/%category/g, tags[tag]), cmds, menuConfig.footer].join('\n')
+      }),
+      menuConfig.after
+    ].join('\n')
+
+    const replace = {
+      '%': '%',
+      p: _p,
+      botname: nombreBot,
+      taguser: '@' + m.sender.split('@')[0],
+      exp: exp - min,
+      maxexp: xp,
+      totalexp: exp,
+      xp4levelup: max - exp,
+      level,
+      limit,
+      name,
+      date,
+      hour,
+      uptime: clockString(process.uptime() * 1000),
+      tipo,
+      group: m.isGroup ? await conn.getName(m.chat) : 'Privado',
+      readmore: readMore,
     }
 
-    if (videoInfo.seconds > 37890) return m.reply('⛔ El video supera el límite de 63 minutos.')
+    const text = _text.replace(
+      new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join('|')})`, 'g'),
+      (_, name) => String(replace[name])
+    )
 
-    
-    let apiUrl = ''
-    let isAudio = false
-
-    if (command == 'play' || command == 'ytmp3') {
-      apiUrl = `https://myapiadonix.vercel.app/api/ytmp3?url=${encodeURIComponent(url)}`
-      isAudio = true
-    } else if (command == 'play4' || command == 'ytmp4') {
-      apiUrl = `https://myapiadonix.vercel.app/api/ytmp4?url=${encodeURIComponent(url)}`
-    } else return m.reply('❌ Comando no reconocido.')
-
-    let res = await fetch(apiUrl)
-    if (!res.ok) throw new Error('Error al conectar con la API.')
-    let json = await res.json()
-    if (!json.success) throw new Error('No se pudo obtener información del video.')
-
-    let { title, thumbnail, quality, download } = json.data
-
-    
-    let fkontak = {
-      key: { fromMe: false, participant: "0@s.whatsapp.net", remoteJid: "status@broadcast" },
-      message: {
-        contactMessage: {
-          displayName: nombreBot,
-          vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;Bot;;;\nFN:${nombreBot}\nTEL;type=CELL;type=VOICE;waid=50493732693:+504 93732693\nEND:VCARD`,
-          jpegThumbnail: null
+    await conn.sendMessage(m.chat, { react: { text: '🧃', key: m.key } })
+    await conn.sendMessage(
+      m.chat,
+      { 
+        text: text.trim(),
+        footer: 'Menú de comandos 📑',
+        headerType: 4,
+        contextInfo: {
+          externalAdReply: {
+            title: "",
+            body: defaultMenu,
+            thumbnailUrl: bannerFinal,
+            sourceUrl: "myapiadonix.vercel.app",
+            mediaType: 1,
+            renderLargerThumbnail: true
+          },
+          mentionedJid: conn.parseMention(text)
         }
-      }
-    }
-
-    
-    let dur = videoInfo.seconds || 0
-    let h = Math.floor(dur / 3600)
-    let m_ = Math.floor((dur % 3600) / 60)
-    let s = dur % 60
-    let duration = [h, m_, s].map(v => v.toString().padStart(2, '0')).join(':')
-
-    
-    let caption = `🧃 *${title}*
-⛅ Duración: *${duration}*`
-
-    await conn.sendMessage(m.chat, {
-      image: { url: thumbnail },
-      caption,
-      contextInfo: {
-        mentionedJid: [m.sender]
-      }
-    }, { quoted: fkontak })
-
-    if (isAudio) {
-      
-      await conn.sendMessage(m.chat, {
-        audio: { url: download },
-        mimetype: 'audio/mpeg',
-        fileName: `${title}.mp3`,
-        ptt: true
-      }, { quoted: fkontak })
-    } else {
-      
-      await conn.sendMessage(m.chat, {
-        document: { url: download },
-        mimetype: 'video/mp4',
-        fileName: `${title}.mp4`
-      }, { quoted: fkontak })
-    }
-
-    await m.react('✅')
+      },
+      { quoted: fkontak }
+    )
   } catch (e) {
-    console.error(e)
-    await m.react('❌')
-    m.reply('❌ Ocurrió un error procesando tu solicitud.')
+    console.error('❌ Error en el menú:', e)
+    conn.reply(m.chat, '❎ Ocurrió un error al mostrar el menú.', m)
   }
 }
 
-handler.help = ['play4']
-handler.tags = ['downloader']
-handler.command = ['play4']
-
+handler.command = ['mtest']
+handler.register = false
 export default handler
+
+// Utilidades
+const more = String.fromCharCode(8206)
+const readMore = more.repeat(4001)
+
+function clockString(ms) {
+  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
+  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
+  let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
+  return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':')
+}
