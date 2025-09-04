@@ -20,7 +20,6 @@ var handler = async (m, { conn }) => {
   // Uptime
   let totalMs = process.uptime() * 1000
   let muptime = clockString(totalMs)
-  let dias = Math.floor(totalMs / 86400000) // 1 día = 86400000 ms
 
   // Chats
   let chats = Object.values(conn.chats).filter(chat => chat.isChats)
@@ -31,10 +30,10 @@ var handler = async (m, { conn }) => {
   // Uso de CPU
   let cpuUsage = await cpu.usage()  // porcentaje
 
-  // Hora y fecha actual
+  // Hora y fecha actual en formato visual
   let now = new Date()
-  let hora = now.toLocaleTimeString('es-PE', { hour12: false })
-  let fecha = now.toLocaleDateString('es-PE')
+  let hora = now.toLocaleTimeString('es-PE', { hour12: true }) // 12h con a.m / p.m
+  let fecha = now.toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' })
 
   let texto = `
 ⚡ *Estado del Bot*
@@ -43,7 +42,7 @@ var handler = async (m, { conn }) => {
 → _${latency} ms_
 
 ⏱️ *Tiempo Activo:*  
-→ _${dias}d ${muptime}_
+→ _${muptime}_
 
 💬 *Chats Activos:*  
 → 👤 _${chats.length}_ chats privados  
@@ -55,8 +54,9 @@ var handler = async (m, { conn }) => {
 ⚙️ *Uso de CPU:*  
 → _${cpuUsage.toFixed(2)} %_
 
-🕒 *Hora del Bot:* ${hora}  
-📅 *Fecha:* ${fecha}
+📊 Fecha y Hora
+→ ${hora}
+→ ${fecha}
 `.trim()
 
   if (m.react) m.react('✈️')
@@ -70,8 +70,10 @@ handler.command = ['speed2']
 export default handler
 
 function clockString(ms) {
-  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
-  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
-  let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
-  return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')
+  if (isNaN(ms)) return '--d --h --m --s'
+  let d = Math.floor(ms / 86400000) // días
+  let h = Math.floor((ms % 86400000) / 3600000) // horas
+  let m = Math.floor((ms % 3600000) / 60000) // minutos
+  let s = Math.floor((ms % 60000) / 1000) // segundos
+  return `${d}d ${h.toString().padStart(2, '0')}h ${m.toString().padStart(2, '0')}m ${s.toString().padStart(2, '0')}s`
 }
