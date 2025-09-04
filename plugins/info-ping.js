@@ -31,7 +31,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
                   name: 'quick_reply',
                   buttonParamsJson: JSON.stringify({
                     display_text: '⚡ Ver velocidad',
-                    id: `${usedPrefix}speed`
+                    id: `${usedPrefix}speed2`
                   })
                 },
                 {
