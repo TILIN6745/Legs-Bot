@@ -70,7 +70,7 @@ async function buscarPinterest(query) {
 let handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text) return m.reply(`🐦‍🔥 Ejemplo: ${usedPrefix + command} gatito`);
 
-  await m.reply('🪸 Cargando resultados');
+  await m.reply('🪸 Cargando resultados...');
 
   async function crearImagen(url) {
     const { imageMessage } = await generateWAMessageContent({ image: { url } }, { upload: conn.waUploadToServer });
@@ -96,11 +96,11 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     let imageUrl = pin.image;
     tarjetas.push({
       body: proto.Message.InteractiveMessage.Body.fromObject({
-        text: `✧ *Título:* ${pin.title}\n » *Descripción:* ${pin.description}\n› *Autor:* ${pin.uploader.full_name} (@${pin.uploader.username})\n✦ Link:* ${pin.pin_url}`
+        text: `✧ *Título:* ${pin.title}\n » *Descripción:* ${pin.description}\n› *Autor:* ${pin.uploader.full_name} (@${pin.uploader.username})\n✦ *Link:* ${pin.pin_url}`
       }),
       footer: proto.Message.InteractiveMessage.Footer.fromObject({ text: '' }),
       header: proto.Message.InteractiveMessage.Header.fromObject({
-        title: `💚 Imagen ${i++}`,
+        title: `> 💚 Imagen ${i++}`,
         hasMediaAttachment: true,
         imageMessage: await crearImagen(imageUrl)
       }),
@@ -117,7 +117,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       message: {
         messageContextInfo: { deviceListMetadata: {}, deviceListMetadataVersion: 2 },
         interactiveMessage: proto.Message.InteractiveMessage.fromObject({
-          body: proto.Message.InteractiveMessage.Body.create({ text: "🥞 Búsqueda completada" }),
+          body: proto.Message.InteractiveMessage.Body.create({ text: "> 🥞 Búsqueda completada" }),
           footer: proto.Message.InteractiveMessage.Footer.create({ text: '' }),
           header: proto.Message.InteractiveMessage.Header.create({ hasMediaAttachment: false }),
           carouselMessage: proto.Message.InteractiveMessage.CarouselMessage.fromObject({ cards: [...tarjetas] })
