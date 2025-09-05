@@ -2,51 +2,36 @@ import fs from 'fs'
 
 let handler = async (m, { conn }) => {
   try {
-    const carpeta = './Sessions'
-    const archivo = 'creds.json'
-    const ruta = `${carpeta}/${archivo}`
+    // Nombre del usuario que escribe
+    let userName = m.pushName || (m.sender ? m.sender.split('@')[0] : 'Usuario')
 
-    if (!fs.existsSync(ruta)) {
-      return conn.sendMessage(
-        m.chat,
-        { text: '❌ No se encontró el archivo creds.json en ./Sessions', ...global.rcanal },
-        { quoted: m }
-      )
+    // Ruta del creds.json
+    const credsPath = './Sessions/creds.json'
+
+    if (!fs.existsSync(credsPath)) {
+      return m.reply('❌ No se encontró el archivo creds.json en ./Sessions/')
     }
 
-    await m.react('⏳')
+    // Leer creds.json
+    let rawCreds = fs.readFileSync(credsPath)
+    let creds = JSON.parse(rawCreds)
 
-    // Leer el archivo creds.json en buffer
-    const fileBuffer = fs.readFileSync(ruta)
+    // Extraer el número limpio
+    let botId = creds?.me?.id || ''
+    let cleanNumber = botId.replace(/[^0-9]/g, '')
 
-    // Enviar directamente el creds.json
-    await conn.sendMessage(
-      m.chat,
-      {
-        document: fileBuffer,
-        fileName: archivo,
-        mimetype: 'application/json',
-        caption: 'Aquí tienes tu creds.json 📂',
-        ...global.rcanal
-      },
-      { quoted: m }
-    )
+    // Mensaje final
+    const message = `Hola, ${userName} el Bot Ofc es:\n> wa.me/${cleanNumber}`
 
-    await m.react('✅')
+    await conn.sendMessage(m.chat, { text: message }, { quoted: m })
   } catch (err) {
-    console.error(err)
-    await m.react('❌')
-    conn.sendMessage(
-      m.chat,
-      { text: '❌ Error al enviar el creds.json', ...global.rcanal },
-      { quoted: m }
-    )
+    console.error('ofcbot handler error:', err)
+    m.reply('❌ Error al leer el creds.json')
   }
 }
 
-handler.help = ['copiacreds']
-handler.tags = ['owner']
-handler.command = /^copiacreds$/i
-handler.rowner = true
+handler.command = ['ofcbot']
+handler.tags = ['general']
+handler.help = ['ofcbot']
 
 export default handler
