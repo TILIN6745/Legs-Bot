@@ -41,7 +41,7 @@ try {
   m.reply('❌ Error al buscar la imagen.')
 }}
 
-handler.help = ['imagen *<búsqueda>*']
+handler.help = ['imagen']
 handler.tags = ['search']
 handler.command = ['image', 'gimage', 'imagen']
 handler.register = false
