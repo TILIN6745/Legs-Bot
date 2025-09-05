@@ -1,19 +1,45 @@
-import Starlights from "@StarlightsTeam/Scraper"
+import fetch from "node-fetch"
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
 if (!text) return m.reply('> Ingresa el nombre de la imágen que estas buscando.\n\n`Ejemplo:`\n' + `> *${usedPrefix + command}* Icons`)
-const prohibited = ['caca', 'polla', 'porno', 'porn', 'gore', 'cum', 'semen', 'puta', 'puto', 'culo', 'putita', 'putito','pussy', 'hentai', 'pene', 'coño', 'asesinato', 'zoofilia', 'mia khalifa', 'desnudo', 'desnuda', 'cuca', 'chocha', 'muertos', 'pornhub', 'xnxx', 'xvideos', 'teta', 'vagina', 'marsha may', 'misha cross', 'sexmex', 'furry', 'furro', 'furra', 'xxx', 'rule34', 'panocha', 'pedofilia', 'necrofilia', 'pinga', 'horny', 'ass', 'nude', 'popo', 'nsfw', 'femdom', 'futanari', 'erofeet', 'sexo', 'sex', 'yuri', 'ero', 'ecchi', 'blowjob', 'anal', 'ahegao', 'pija', 'verga', 'trasero', 'violation', 'violacion', 'bdsm', 'cachonda', '+18', 'cp', 'mia marin', 'lana rhoades', 'cogiendo', 'cepesito', 'hot', 'buceta', 'xxx', 'rule', 'r u l e']
-if (prohibited.some(word => m.text.toLowerCase().includes(word))) return m.reply('Deja de buscar eso puto enfermo de mierda, por eso te encannta la paja.').then(_ => m.react('✖️'))
+
+const prohibited = [
+  'caca','polla','porno','porn','gore','cum','semen','puta','puto','culo','putita','putito','pussy',
+  'hentai','pene','coño','asesinato','zoofilia','mia khalifa','desnudo','desnuda','cuca','chocha',
+  'muertos','pornhub','xnxx','xvideos','teta','vagina','marsha may','misha cross','sexmex','furry',
+  'furro','furra','xxx','rule34','panocha','pedofilia','necrofilia','pinga','horny','ass','nude',
+  'popo','nsfw','femdom','futanari','erofeet','sexo','sex','yuri','ero','ecchi','blowjob','anal',
+  'ahegao','pija','verga','trasero','violation','violacion','bdsm','cachonda','+18','cp','mia marin',
+  'lana rhoades','cogiendo','cepesito','hot','buceta','xxx','rule','r u l e'
+]
+
+if (prohibited.some(word => m.text.toLowerCase().includes(word))) 
+  return m.reply('Deja de buscar eso puto enfermo de mierda, por eso te encannta la paja.').then(_ => m.react('✖️'))
+
 await m.react('🕓')
+
 try {
-let { dl_url } = await Starlights.GoogleImage(text)
-await conn.sendFile(m.chat, dl_url, 'thumbnail.jpg', `*» Resultado* : ${text}`, m, null, rcanal)
-await m.react('✅')
-} catch {
-await m.react('✖️')
+  let api = await fetch(`https://myapiadonix.casacam.net/search/gimage?q=${encodeURIComponent(text)}`)
+  let res = await api.json()
+  
+  if (!res.status || !res.result?.length) {
+    await m.react('✖️')
+    return m.reply('❌ No encontré resultados para esa búsqueda.')
+  }
+
+  
+  let img = res.result[Math.floor(Math.random() * res.result.length)].url
+
+  await conn.sendFile(m.chat, img, 'image.jpg', `*⟩ Resultado* : ${text}`, m, null, rcanal)
+  await m.react('✅')
+} catch (e) {
+  await m.react('✖️')
+  m.reply('❌ Error al buscar la imagen.')
 }}
+
 handler.help = ['imagen *<búsqueda>*']
 handler.tags = ['search']
 handler.command = ['image', 'gimage', 'imagen']
 handler.register = false
+
 export default handler
