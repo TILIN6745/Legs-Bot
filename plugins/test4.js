@@ -1,36 +1,38 @@
-
-//Obtiene el número del bot principal desde ./Sessions/creds.json
-
-
 import fs from 'fs';
 
-let handler = async (m, { conn }) => { try { // Obtén nombre del usuario let userName = m.pushName || (m.sender ? m.sender.split('@')[0] : 'Usuario');
+let handler = async (m, { conn }) => {
+  try {
+    let userName = m.pushName || (m.sender ? m.sender.split('@')[0] : 'Usuario');
 
-// Lee el creds.json para obtener el número del bot principal
-const credsPath = './Sessions/creds.json';
-let rawCreds = fs.readFileSync(credsPath);
-let creds = JSON.parse(rawCreds);
+    // Ruta del creds.json
+    const credsPath = './Sessions/creds.json';
+    let rawCreds = fs.readFileSync(credsPath);
+    let creds = JSON.parse(rawCreds);
 
-// El id del bot suele estar en creds.me.id (ejemplo: "51987654321@s.whatsapp.net")
-const botId = creds?.me?.id || '';
-const cleanNumber = botId.replace(/[^0-9]/g, '');
+    // Busca en diferentes lugares
+    let botId =
+      creds?.me?.id ||
+      creds?.creds?.me?.id ||
+      creds?.registered?.id ||
+      '';
 
-// Construye el mensaje de respuesta
-const message = `Hola, ${userName} el Bot Ofc es:\n> wa.me/${cleanNumber}`;
+    const cleanNumber = botId.replace(/[^0-9]/g, '') || '000000000';
 
-// Envía la respuesta
-if (typeof m.reply === 'function') {
-  return m.reply(message);
-}
+    const message = `Hola, ${userName} el Bot Ofc es:\n> wa.me/${cleanNumber}`;
 
-await conn.sendMessage(m.chat, { text: message }, { quoted: m });
+    if (typeof m.reply === 'function') {
+      return m.reply(message);
+    }
 
-} catch (err) { console.error('ofcbot handler error:', err); } };
+    await conn.sendMessage(m.chat, { text: message }, { quoted: m });
+  } catch (err) {
+    console.error('ofcbot handler error:', err);
+  }
+};
 
-// Opciones de comando
 handler.command = ['ofcbot'];
+handler.customPrefix = /^\\.?ofcbot$/i;
 handler.tags = ['general'];
 handler.help = ['ofcbot'];
 
 export default handler;
-
