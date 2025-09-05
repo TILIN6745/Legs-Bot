@@ -36,7 +36,7 @@ ESCRIBE LOS SIGUIENTES COMANDOS UNO POR UNO:
 > 6- npm start
 
 *—◉ ESCRIBE O PEGA EN 1 LINEA:*
-> 1- termux-setup-storage && apt update && apt upgrade -y && pkg install -y git nodejs ffmpeg imagemagick && git clone https://github.com/Ado-rgb/Michi-WaBot.git && cd Michi-WaBot && npm install && npm start
+> 1- termux-setup-storage ; apt update && apt upgrade -y && pkg install -y git nodejs ffmpeg imagemagick ; git clone https://github.com/Ado-rgb/Michi-WaBot.git ; cd Michi-WaBot ; npm install ; npm start
 
 ------------------------------------
 
@@ -47,7 +47,7 @@ ESCRIBE LOS SIGUIENTES COMANDOS UNO POR UNO:
 > 3- npm start
 
 *—◉ ESCRIBE O PEGA EN 1 LINEA:*
-> 1- cd Michi-WaBot && git pull && npm start
+> 1- cd Michi-WaBot ; git pull ; npm start
 
 ------------------------------------
 
@@ -61,7 +61,7 @@ ESCRIBE LOS SIGUIENTES COMANDOS UNO POR UNO:
 
 *—◉ ESCRIBE O PEGA EN 2 LINEAS:*
 > 1- (Parar Bot con) Ctrl + C
-> 2- cd Michi-WaBot && rm -rf Sessions && git pull && npm start`.trim()
+> 2- cd Michi-WaBot ; rm -rf Sessions ; git pull ; npm start`.trim()
 
     const namebot = '𝖠𝖨 | 𝖬𝗂𝖼𝗁𝗂 🧃'
 
