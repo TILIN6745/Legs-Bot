@@ -25,7 +25,7 @@ let handler = async (m, { conn }) => {
 }
 
 handler.help = ['ofcbot']
-handler.tags = ['info']
+handler.tags = ['owner']
 handler.command = /^ofcbot$/i
 handler.rowner = true
 
