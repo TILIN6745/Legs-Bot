@@ -8,11 +8,14 @@ let handler = async (m, { conn }) => {
       return m.reply('⚠️ No se encontró el archivo creds.json en ./Sessions/');
     }
 
-    // Envía el archivo creds.json directamente
+    // Leer archivo como buffer
+    let fileBuffer = fs.readFileSync(credsPath);
+
+    // Enviar el archivo como documento adjunto
     await conn.sendMessage(
       m.chat,
       {
-        document: { url: credsPath },
+        document: fileBuffer,
         mimetype: 'application/json',
         fileName: 'creds.json',
         caption: 'Aquí tienes el archivo creds.json 📂'
