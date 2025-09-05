@@ -15,7 +15,7 @@ Recuerda que la imagen puede tardar unos segundos en generarse.
   try {
     await conn.sendMessage(m.chat, { react: { text: '🕒', key: m.key } })
 
-    const api = `https://myapiadonix.vercel.app/ai/iaimagen?prompt=${encodeURIComponent(prompt)}`
+    const api = `https://myapiadonix.casacam.net/ai/iaimagen?prompt=${encodeURIComponent(prompt)}`
     const res = await fetch(api)
     if (!res.ok) throw new Error(`Error HTTP ${res.status}`)
 
