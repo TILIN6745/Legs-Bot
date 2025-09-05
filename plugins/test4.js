@@ -1,11 +1,12 @@
 const handler = async (m, { conn }) => {
   const q = m.quoted ? m.quoted : m
   const mime = (q.msg || q).mimetype || ''
+  const fileName = (q.msg || q).fileName || `archivo.${mime.split('/')[1] || 'bin'}`
 
-  if (!/image|video/.test(mime)) {
+  if (!mime) {
     return conn.sendMessage(
       m.chat,
-      { text: `✿ Responde a una *imagen o video* para reenviarlo\n`, ...global.rcanal },
+      { text: `✿ Responde a un *archivo, imagen, video o audio* para reenviarlo\n`, ...global.rcanal },
       { quoted: m }
     )
   }
@@ -26,6 +27,19 @@ const handler = async (m, { conn }) => {
       await conn.sendMessage(
         m.chat,
         { video: media, caption: `🎥 Aquí está tu video`, ...global.rcanal },
+        { quoted: m }
+      )
+    } else if (/audio/.test(mime)) {
+      await conn.sendMessage(
+        m.chat,
+        { audio: media, mimetype: mime, fileName, ptt: false, ...global.rcanal },
+        { quoted: m }
+      )
+    } else {
+      // Documentos: pdf, docx, xls, zip, rar, etc. con su nombre original
+      await conn.sendMessage(
+        m.chat,
+        { document: media, mimetype: mime, fileName, ...global.rcanal },
         { quoted: m }
       )
     }
