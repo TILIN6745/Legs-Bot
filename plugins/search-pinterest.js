@@ -131,6 +131,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
 handler.help = ['pinterest'];
 handler.tags = ['search'];
-handler.command = /^(pinterest)$/i;
+handler.command = /^(pinterest|pin)$/i
 
 export default handler;
