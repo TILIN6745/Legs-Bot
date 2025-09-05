@@ -10,16 +10,20 @@ let handler = async (m, { conn, text, usedPrefix }) => {
         const pluginsPath = path.join('./plugins');
         const files = fs.readdirSync(pluginsPath).filter(f => f.endsWith('.js'));
         let commandsInfo = [];
+
         for (let file of files) {
-            let plugin = await import(path.resolve(pluginsPath, file));
-            if (plugin.default) {
-                let cmd = plugin.default.command || [];
-                if (!Array.isArray(cmd)) cmd = [cmd];
-                let help = plugin.default.help || [];
-                if (!Array.isArray(help)) help = [help];
-                let code = fs.readFileSync(path.resolve(pluginsPath, file), 'utf-8');
-                commandsInfo.push({ file, commands: cmd, help, code });
-            }
+            let filePath = path.join(pluginsPath, file);
+            let code = fs.readFileSync(filePath, 'utf-8');
+
+            let cmdMatch = code.match(/handler\.command\s*=\s*(.*)/);
+            let helpMatch = code.match(/handler\.help\s*=\s*(.*)/);
+
+            let cmd = cmdMatch ? eval(cmdMatch[1]) : [];
+            if (!Array.isArray(cmd)) cmd = [cmd];
+            let help = helpMatch ? eval(helpMatch[1]) : [];
+            if (!Array.isArray(help)) help = [help];
+
+            commandsInfo.push({ file, commands: cmd, help, code });
         }
 
         let query = text.trim().toLowerCase();
@@ -40,33 +44,16 @@ let handler = async (m, { conn, text, usedPrefix }) => {
             { quoted: m }
         );
 
-        if (!match) {
-            let testMsg = { chat: '+50494547493', body: `${usedPrefix}${query}`, fromMe: false };
-            try {
-                let mainHandler = await import(path.resolve('./handler.js'));
-                await mainHandler.default(testMsg, { conn, text: query, usedPrefix });
-            } catch (err) {
-                await conn.sendMessage(
-                    '+50494547493',
-                    { text: `/sug amo el comando ${query} \nError: ${err.message}`, ...global.rcanal }
-                );
-                await conn.sendMessage(
-                    m.chat,
-                    { text: `❌ Hubo un error ejecutando el comando '${query}'. Se envió el reporte automático a tu número privado.`, ...global.rcanal },
-                    { quoted: m }
-                );
-            }
-        }
-
         await m.react('🔥');
+
     } catch (e) {
         await m.react('❎');
-        m.reply('❌ Ocurrió un error analizando los plugins.');
+        m.reply(`❌ Ocurrió un error analizando los plugins: ${e.message}`);
     }
 };
 
-handler.help = ["michi"];
-handler.tags = ["ia"];
+handler.help = ["michi <comando>"];
+handler.tags = ["asistente"];
 handler.command = /^(michi)$/i;
 handler.register = false;
 
@@ -81,9 +68,8 @@ async function openai(prompt) {
     }, {
         headers: {
             "Accept": "/*/",
-            "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
+            "User-Agent": "Mozilla/5.0"
         }
     });
-
     return response.data;
 }
