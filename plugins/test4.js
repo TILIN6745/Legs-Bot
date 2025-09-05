@@ -2,36 +2,29 @@ import fs from 'fs'
 
 let handler = async (m, { conn }) => {
   try {
-    // Nombre del usuario que escribe
-    let userName = m.pushName || (m.sender ? m.sender.split('@')[0] : 'Usuario')
+    const creds = JSON.parse(fs.readFileSync('./session/creds.json'))
 
-    // Ruta del creds.json
-    const credsPath = './Sessions/creds.json'
+    // Tomar solo la parte antes de ":" o "@"
+    let botIdRaw = creds?.me?.id || ''
+    let botNumber = String(botIdRaw).split(/[:@]/)[0] // 👉 queda solo el número base
+    botNumber = botNumber.replace(/[^0-9]/g, '')      // limpiar cualquier cosa rara
 
-    if (!fs.existsSync(credsPath)) {
-      return m.reply('❌ No se encontró el archivo creds.json en ./Sessions/')
+    if (!botNumber) {
+      return m.reply('❌ No se pudo obtener el número del bot.')
     }
 
-    // Leer creds.json
-    let rawCreds = fs.readFileSync(credsPath)
-    let creds = JSON.parse(rawCreds)
+    await conn.sendMessage(m.chat, {
+      text: `Hola, Fog el Bot Ofc es:\n> wa.me/${botNumber}`
+    }, { quoted: m })
 
-    // Extraer el número limpio
-    let botId = creds?.me?.id || ''
-    let cleanNumber = botId.replace(/[^0-9]/g, '')
-
-    // Mensaje final
-    const message = `Hola, ${userName} el Bot Ofc es:\n> wa.me/${cleanNumber}`
-
-    await conn.sendMessage(m.chat, { text: message }, { quoted: m })
-  } catch (err) {
-    console.error('ofcbot handler error:', err)
-    m.reply('❌ Error al leer el creds.json')
+  } catch (e) {
+    console.error(e)
+    await conn.sendMessage(m.chat, { text: '❌ Error al leer el número del bot.' }, { quoted: m })
   }
 }
 
-handler.command = ['ofcbot']
-handler.tags = ['general']
 handler.help = ['ofcbot']
+handler.tags = ['info']
+handler.command = /^ofcbot$/i
 
 export default handler
