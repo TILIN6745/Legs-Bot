@@ -1,11 +1,28 @@
 let handler = async (m, { text, command }) => {
   const opciones = ["piedra", "papel", "tijera"];
-  const userChoice = text?.toLowerCase();
-  const botChoice = opciones[Math.floor(Math.random() * 3)];
+  const alias = {
+    pi: "piedra",
+    pa: "papel",
+    ti: "tijera",
+  };
 
+  const emojis = {
+    piedra: "🪨",
+    papel: "📄",
+    tijera: "✂️",
+  };
+
+  let userChoice = text?.toLowerCase();
+
+  // convertir alias
+  if (alias[userChoice]) userChoice = alias[userChoice];
+
+  // validar
   if (!opciones.includes(userChoice)) {
-    return m.reply(`✋ Elige una opción válida:\n\n- piedra\n- papel\n- tijera\n\nEjemplo: .${command} piedra`);
+    return m.reply(`✋ Elige una opción válida:\n\n- piedra (pi)\n- papel (pa)\n- tijera (ti)\n\nEjemplo: .${command} pi`);
   }
+
+  const botChoice = opciones[Math.floor(Math.random() * 3)];
 
   let resultado;
   if (userChoice === botChoice) {
@@ -20,7 +37,12 @@ let handler = async (m, { text, command }) => {
     resultado = "😢 Perdiste!";
   }
 
-  m.reply(`Tú elegiste: ${userChoice}\nEl bot eligió: ${botChoice}\n\n${resultado}`);
+  m.reply(
+`Tú elegiste: ${emojis[userChoice]} (${userChoice})
+El bot eligió: ${emojis[botChoice]} (${botChoice})
+
+${resultado}`
+  );
 };
 
 handler.command = /^ppt|piedrapapeltijera$/i;
