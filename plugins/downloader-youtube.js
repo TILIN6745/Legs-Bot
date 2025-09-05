@@ -51,7 +51,7 @@ const handler = async (m, { conn, text, command }) => {
     }
 
     const format = isAudio ? 'audio' : 'video'
-    const apiUrl = `https://myapiadonix.vercel.app/download/yt?url=${encodeURIComponent(url)}&format=${format}`
+    const apiUrl = `https://myapiadonix.casacam.net/download/yt?url=${encodeURIComponent(url)}&format=${format}`
     const res = await fetch(apiUrl)
     const json = await res.json()
 
