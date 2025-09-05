@@ -42,8 +42,8 @@ const handler = async (m, { conn }) => {
   }
 }
 
-handler.help = ['ver']
+handler.help = ['ver2']
 handler.tags = ['tools']
-handler.command = ['ver']
+handler.command = ['ver2']
 
 export default handler
