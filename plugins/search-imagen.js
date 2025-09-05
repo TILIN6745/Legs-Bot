@@ -30,7 +30,11 @@ try {
   
   let img = res.result[Math.floor(Math.random() * res.result.length)].url
 
-  await conn.sendFile(m.chat, img, 'image.jpg', `*⟩ Resultado* : ${text}`, m, null, rcanal)
+  await conn.sendMessage(m.chat, { 
+    image: { url: img }, 
+    caption: `*⟩ Resultado* : ${text}` 
+  }, { quoted: m })
+
   await m.react('✅')
 } catch (e) {
   await m.react('✖️')
