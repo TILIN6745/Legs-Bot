@@ -123,20 +123,9 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
     await conn.sendMessage(
       m.chat,
       { 
-        text: text.trim(),
+        image: { url: bannerFinal },
+        caption: text.trim(),
         footer: 'Menú de comandos 📑',
-        headerType: 4,
-        contextInfo: {
-          externalAdReply: {
-            title: "",
-            body: nombreBot,
-            thumbnailUrl: bannerFinal,
-            sourceUrl: "myapiadonix.vercel.app",
-            mediaType: 1,
-            renderLargerThumbnail: true
-          },
-          mentionedJid: conn.parseMention(text)
-        }
       },
       { quoted: fkontak }
     )
