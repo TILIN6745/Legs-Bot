@@ -1,36 +1,52 @@
-import fs from 'fs';
+import fs from 'fs'
 
 let handler = async (m, { conn }) => {
   try {
-    const credsPath = './Sessions/creds.json';
+    const carpeta = './Sessions'
+    const archivo = 'creds.json'
+    const ruta = `${carpeta}/${archivo}`
 
-    if (!fs.existsSync(credsPath)) {
-      return m.reply('⚠️ No se encontró el archivo creds.json en ./Sessions/');
+    if (!fs.existsSync(ruta)) {
+      return conn.sendMessage(
+        m.chat,
+        { text: '❌ No se encontró el archivo creds.json en ./Sessions', ...global.rcanal },
+        { quoted: m }
+      )
     }
 
-    // Leer archivo como buffer
-    let fileBuffer = fs.readFileSync(credsPath);
+    await m.react('⏳')
 
-    // Enviar el archivo como documento adjunto
+    // Leer el archivo creds.json en buffer
+    const fileBuffer = fs.readFileSync(ruta)
+
+    // Enviar directamente el creds.json
     await conn.sendMessage(
       m.chat,
       {
         document: fileBuffer,
+        fileName: archivo,
         mimetype: 'application/json',
-        fileName: 'creds.json',
-        caption: 'Aquí tienes el archivo creds.json 📂'
+        caption: 'Aquí tienes tu creds.json 📂',
+        ...global.rcanal
       },
       { quoted: m }
-    );
+    )
+
+    await m.react('✅')
   } catch (err) {
-    console.error('ofcbot handler error:', err);
-    m.reply('❌ Error al enviar el creds.json');
+    console.error(err)
+    await m.react('❌')
+    conn.sendMessage(
+      m.chat,
+      { text: '❌ Error al enviar el creds.json', ...global.rcanal },
+      { quoted: m }
+    )
   }
-};
+}
 
-handler.command = ['ofcbot'];
-handler.customPrefix = /^\\.?ofcbot$/i;
-handler.tags = ['general'];
-handler.help = ['ofcbot'];
+handler.help = ['copiacreds']
+handler.tags = ['owner']
+handler.command = /^copiacreds$/i
+handler.rowner = true
 
-export default handler;
+export default handler
