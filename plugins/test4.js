@@ -2,19 +2,20 @@ import fs from 'fs'
 
 let handler = async (m, { conn }) => {
   try {
-    const creds = JSON.parse(fs.readFileSync('./session/creds.json'))
+    // Asegúrate de que la ruta es la correcta
+    const creds = JSON.parse(fs.readFileSync('./Sessions/creds.json'))
 
-    // Tomar solo la parte antes de ":" o "@"
-    let botIdRaw = creds?.me?.id || ''
-    let botNumber = String(botIdRaw).split(/[:@]/)[0] // 👉 queda solo el número base
-    botNumber = botNumber.replace(/[^0-9]/g, '')      // limpiar cualquier cosa rara
+    // Buscar primero en id, luego en jid
+    let botIdRaw = creds?.me?.id || creds?.me?.jid || ''
+    let botNumber = String(botIdRaw).split(/[:@]/)[0] // solo número
+    botNumber = botNumber.replace(/[^0-9]/g, '')
 
     if (!botNumber) {
       return m.reply('❌ No se pudo obtener el número del bot.')
     }
 
     await conn.sendMessage(m.chat, {
-      text: `Hola, Fog el Bot Ofc es:\n> wa.me/${botNumber}`
+      text: `Hola, ${m.pushName} el Bot Ofc es:\n> wa.me/${botNumber}`
     }, { quoted: m })
 
   } catch (e) {
