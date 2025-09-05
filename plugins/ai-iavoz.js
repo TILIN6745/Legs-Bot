@@ -6,7 +6,7 @@ let handler = async (m, { conn, text, usedPrefix }) => {
   try {
     await conn.sendPresenceUpdate('recording', m.chat)
 
-    const res = await fetch(`https://myapiadonix.vercel.app/ai/iavoz?q=${encodeURIComponent(text)}`)
+    const res = await fetch(`https://myapiadonix.casacam.net/ai/iavoz?q=${encodeURIComponent(text)}`)
     if (!res.ok) throw new Error('No pude obtener audio de Adonix')
 
     const data = await res.json()
