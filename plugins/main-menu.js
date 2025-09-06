@@ -26,10 +26,10 @@ const defaultMenu = {
 ✐ Hola Soy *%botname* ( *%tipo* )
 
 ❐ Comandos
-╭━─━──────────━─━╮
+╭━─━────────━─━╮
 `,
 
-  header: '╰╮ » ✐ *%category* ✩\n╭━─━────────────━─━╯',
+  header: '» ✐ *%category* ✩\n╭━─━─────────━─━╯',
   body: '┊ ✐ %cmd %islimit %isPremium',
   footer: '╰--------------------≫',
   after: '\n✩ ❐ Creador: Ado ✐'
