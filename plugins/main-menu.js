@@ -3,36 +3,36 @@ import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
 
 const tags = {
-  owner: '·˚✦ Propietario',
-  serbot: '·˚✦ Subbots',
-  eco: '·˚✦ Economía',
-  downloader: '·˚✦ Descargas',
-  tools: '·˚✦ Herramientas',
-  efectos: '·˚✦ Efectos',
-  info: '·˚✦ Información',
-  game: '·˚✦ Juegos',
-  gacha: '·˚✦ Gacha Anime',
-  reacciones: '·˚✦ Reacciones Anime',
-  group: '·˚✦ Grupos',
-  search: '·˚✦ Buscadores',
-  sticker: '·˚✦ Stickers',
-  ia: '·˚✦ IA',
-  channel: '·˚✦ Canales',
-  fun: '·˚✦ Diversión',
+  owner: '✐ Propietario',
+  serbot: 'ꕤ Subbots',
+  eco: '❐ Economía',
+  downloader: '✩ Descargas',
+  tools: '✐ Herramientas',
+  efectos: 'ꕤ Efectos',
+  info: '❐ Información',
+  game: '✩ Juegos',
+  gacha: '✐ Gacha Anime',
+  reacciones: 'ꕤ Reacciones Anime',
+  group: '❐ Grupos',
+  search: '✩ Buscadores',
+  sticker: '✐ Stickers',
+  ia: 'ꕤ IA',
+  channel: '❐ Canales',
+  fun: '✩ Diversión',
 }
 
 const defaultMenu = {
   before: `
-✧ Hola Soy *%botname* *_(%tipo)_* ☆
+✐ Hola Soy *%botname* *_(%tipo)_* ❐
 
-> ✦ Fecha ➜ %date
-> ✦ Hora ➜ %hour\n───── ⋆✩⋆ ───────
+> ✩ Fecha » %date
+> ✩ Hora » %hour\n───── ✐ ❐ ✩ ───────
 `,
 
-  header: '\n> *%category* ✦',
-  body: '> *✩* %cmd %islimit %isPremium',
+  header: '\n> *%category* ✩',
+  body: '> ✐ %cmd %islimit %isPremium',
   footer: '',
-  after: `\n> ❍ Creador: Ado ✦`
+  after: `\n> ❐ Creador: Ado ✩`
 }
 
 const handler = async (m, { conn, usedPrefix: _p }) => {
@@ -61,7 +61,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
     }
 
     let nombreBot = global.namebot || 'Bot'
-    let bannerFinal = 'https://iili.io/KCX22B1.jpg' // tu banner
+    let bannerFinal = 'https://iili.io/KCX22B1.jpg'
 
     const botActual = conn.user?.jid?.split('@')[0]?.replace(/\D/g, '')
     const configPath = join('./JadiBots', botActual || '', 'config.json')
@@ -84,8 +84,8 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
           .map(menu => menu.help.map(h => 
             menuConfig.body
               .replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`)
-              .replace(/%islimit/g, menu.limit ? '☆' : '')
-              .replace(/%isPremium/g, menu.premium ? '✦' : '')
+              .replace(/%islimit/g, menu.limit ? '✐' : '')
+              .replace(/%isPremium/g, menu.premium ? '❐' : '')
           ).join('\n')).join('\n')
         return [menuConfig.header.replace(/%category/g, tags[tag]), cmds, menuConfig.footer].join('\n')
       }),
@@ -117,16 +117,14 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       (_, name) => String(replace[name])
     )
 
-    
-    await conn.sendMessage(m.chat, { react: { text: '🍼', key: m.key } })
+    await conn.sendMessage(m.chat, { react: { text: '✐', key: m.key } })
 
-    
     await conn.sendMessage(
       m.chat,
       { 
         image: { url: bannerFinal },
         caption: text.trim(),
-        footer: '·˚✦ ༘ ꒱ Menú de comandos ☆',
+        footer: 'ꕤ Menú de comandos ✩',
         contextInfo: { 
           forwardingScore: 999, 
           isForwarded: true
