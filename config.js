@@ -3,37 +3,37 @@ import chalk from 'chalk'
 import { fileURLToPath } from 'url'
 
 global.owner = [
-  ['50493732693', 'Ado', true],
-  ['51956931649'],
-  ['156981591593126'],
-  ['595972314588'],
+  ['5219223728668', 'Ado', true],
+  ['5219223728668'],
+  ['5219223728668'],
+  ['5218336105471'],
 ]
 
 global.mods = []
 global.prems = []
 
-global.namebot = '🌤 𝖬𝗂𝖼𝗁𝗂 𝖶𝖺𝖡𝗈𝗍'
-global.packname = '𝖬𝗂𝖼𝗁𝗂 ° 𝖶𝖺 🥞'
-global.author = '𝖡𝖸 𝖠𝖽𝗈 | © 2025 ❄'
-global.moneda = '𝖬𝖺𝗇𝗓𝖺𝗇𝖺𝗌 🍎'
+global.namebot = 'LEGS BOT'
+global.packname = 'LEGS BOT'
+global.author = '𝖡𝖸 Tilin | © 2025'
+global.moneda = 'LEGSS 🥷'
 
 
 
 global.libreria = 'Baileys'
 global.baileys = 'V 6.7.16'
 global.vs = '2.2.0'
-global.sessions = 'Sessions'
+global.sessions = 'LEGSBOS'
 global.jadi = 'JadiBots'
 global.yukiJadibts = true
 
 global.namecanal = '❇️'
-global.idcanal = '120363403739366547@newsletter'
-global.idcanal2 = '120363403739366547@newsletter'
-global.canal = 'https://whatsapp.com/channel/0029Vb5pM031CYoMvQi2I02D'
-global.canalreg = '120363402895449162@newsletter'
+global.idcanal = '120363357544459855@newsletter'
+global.idcanal2 = '120363357544459855@newsletter'
+global.canal = 'https://whatsapp.com/channel/0029VauK3kA4SpkPQyez1z00'
+global.canalreg = '120363357544459855@newsletter'
 
 global.ch = {
-  ch1: '120363420941524030@newsletter'
+  ch1: '120363357544459855@newsletter'
 }
 
 global.multiplier = 69
