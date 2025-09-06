@@ -5,7 +5,7 @@ const handler = async (m, { conn, args }) => {
     const chatId = m.chat
 
     if (!chatId.endsWith('@g.us')) {
-      await conn.sendMessage(chatId, { text: '⚠️ Este comando solo se puede usar en grupos.' }, { quoted: m })
+      await conn.sendMessage(chatId, { text: '✩ Este comando solo se puede usar en grupos.' }, { quoted: m })
       return
     }
 
@@ -67,7 +67,7 @@ const handler = async (m, { conn, args }) => {
 
     if (!messageToForward) {
       await conn.sendMessage(chatId, {
-        text: '⚠️ Debes responder a un mensaje o escribir un texto para etiquetar.'
+        text: '✧ Debes responder a un mensaje o escribir algo para etiquetar al grupo.'
       }, { quoted: m })
       return
     }
@@ -80,7 +80,7 @@ const handler = async (m, { conn, args }) => {
   } catch (error) {
     console.error('❌ Error en el comando tag:', error)
     await conn.sendMessage(m.chat, {
-      text: '❌ Ocurrió un error al ejecutar el comando tag.'
+      text: '✩ Ocurrió un error al ejecutar el comando tag.'
     }, { quoted: m })
   }
 }
@@ -90,4 +90,5 @@ handler.help = ['tag']
 handler.tags = ['group']
 handler.group = true
 handler.admin = true
+handler.botAdmin = true
 export default handler
