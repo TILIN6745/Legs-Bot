@@ -36,7 +36,7 @@ let newlink = `> *✧ El enlace de invitación al grupo fue restablecido.*
 let status = `> ✧ El estado del grupo cambió.  
 ✐ El grupo fue *${m.messageStubParameters[0] == 'on' ? 'cerrado' : 'abierto'}*.  
 ✧ Ahora *${m.messageStubParameters[0] == 'on' ? 'solo los administradores' : 'todos los miembros'}* pueden enviar mensajes.  
-*✐ Cambio realizado por: ${usuario}*`
+✐ *Cambio realizado por:* ${usuario}`
 
 let admingp = `*✧ Un miembro recibió permisos de administrador.*  
 ✐ Nuevo administrador: @${m.messageStubParameters[0].split`@`[0]}  
