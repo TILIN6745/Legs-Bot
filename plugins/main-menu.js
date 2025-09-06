@@ -7,7 +7,7 @@ let handler = async (m, { conn }) => {
     // Datos del bot y usuario
     let nombreBot = global.namebot || 'Bot'
     let nombreUsuario = await conn.getName(m.sender)
-    let bannerFinal = 'https://iili.io/KCX22B1.jpg'
+    let bannerFinal = 'https://i.postimg.cc/t4Cg1ynZ/IMG-20250902-WA0137.jpg'
 
     // Tiempo activo
     let _uptime = process.uptime() * 1000
