@@ -3,38 +3,37 @@ import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
 
 const tags = {
-  owner: '👑 ꨶㅤPropietario',
-  serbot: '🫟 Subbots',
-  eco: '💸ㅤEconomía',
-  downloader: '🪴 Descargas',
-  tools: '🛠️ㅤHerramientas',
-  efectos: '🍿 Efectos',
-  info: 'ℹ️ㅤInformación',
-  game: '🎮 Juegos',
-  gacha: '🎲 Gacha Anime',
-  reacciones: '💕 Reacciones Anime',
-  group: '👥 Grupos',
-  search: '🔎 Buscadores',
-  sticker: '📌 Stickers',
-  ia: '🤖 IA',
-  channel: '📺 Canales',
-  fun: '😂 Diversión',
+  owner: '·˚✦ ༘ ꒱ Propietario',
+  serbot: '·˚✦ ༘ ꒱ Subbots',
+  eco: '·˚✦ ༘ ꒱ Economía',
+  downloader: '·˚✦ ༘ ꒱ Descargas',
+  tools: '·˚✦ ༘ ꒱ Herramientas',
+  efectos: '·˚✦ ༘ ꒱ Efectos',
+  info: '·˚✦ ༘ ꒱ Información',
+  game: '·˚✦ ༘ ꒱ Juegos',
+  gacha: '·˚✦ ༘ ꒱ Gacha Anime',
+  reacciones: '·˚✦ ༘ ꒱ Reacciones Anime',
+  group: '·˚✦ ༘ ꒱ Grupos',
+  search: '·˚✦ ༘ ꒱ Buscadores',
+  sticker: '·˚✦ ༘ ꒱ Stickers',
+  ia: '·˚✦ ༘ ꒱ IA',
+  channel: '·˚✦ ༘ ꒱ Canales',
+  fun: '·˚✦ ༘ ꒱ Diversión',
 }
 
 const defaultMenu = {
   before: `
-🌵 Hola soy *%botname* *_(%tipo)_*
+·˚✦ ༘ ꒱ Hola soy *%botname* *_(%tipo)_* ☆
 
-　ׅ🌳ㅤ *¿Cómo estas?* %name
- 
-🥞  ׄ ְ *Fecha ›* %date
-🥮  ׄ ְ *Hora ›* %hour
+❍ ¿Cómo estás? ➜ %name
+✦ Fecha ➜ %date
+✦ Hora ➜ %hour
 `,
 
-  header: '> *%category*\n',
-  body: '> 🍿 *%cmd* %islimit %isPremium',
+  header: '\n·˚✦ ༘ ꒱ *%category* ✦\n',
+  body: '➜ %cmd %islimit %isPremium',
   footer: '',
-  after: `> 🌾 Creador › Ado`
+  after: `\n❍ Creador: Ado ✦`
 }
 
 const handler = async (m, { conn, usedPrefix: _p }) => {
@@ -59,7 +58,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
 
     let fkontak = { 
       key: { remoteJid: "status@broadcast", participant: "0@s.whatsapp.net" },
-      message: { imageMessage: { caption: "🧃 Menu Completo", jpegThumbnail: Buffer.alloc(0) }}
+      message: { imageMessage: { caption: "Menú Completo", jpegThumbnail: Buffer.alloc(0) }}
     }
 
     let nombreBot = global.namebot || 'Bot'
@@ -86,8 +85,8 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
           .map(menu => menu.help.map(h => 
             menuConfig.body
               .replace(/%cmd/g, menu.prefix ? h : `${_p}${h}`)
-              .replace(/%islimit/g, menu.limit ? '⭐' : '')
-              .replace(/%isPremium/g, menu.premium ? '💎' : '')
+              .replace(/%islimit/g, menu.limit ? '☆' : '')
+              .replace(/%isPremium/g, menu.premium ? '✦' : '')
           ).join('\n')).join('\n')
         return [menuConfig.header.replace(/%category/g, tags[tag]), cmds, menuConfig.footer].join('\n')
       }),
@@ -119,13 +118,13 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       (_, name) => String(replace[name])
     )
 
-    await conn.sendMessage(m.chat, { react: { text: '🧃', key: m.key } })
+    await conn.sendMessage(m.chat, { react: { text: '🍼', key: m.key } })
     await conn.sendMessage(
       m.chat,
       { 
         image: { url: bannerFinal },
         caption: text.trim(),
-        footer: 'Menú de comandos 📑',
+        footer: '·˚✦ ༘ ꒱ Menú de comandos ☆',
       },
       { quoted: fkontak }
     )
