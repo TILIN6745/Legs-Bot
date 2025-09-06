@@ -27,7 +27,7 @@ const handler = async (m, { conn }) => {
 > 1- termux.uptodown.com/android
 
 ❐ ✩ INSTALACION MANUAL VIA TERMUX ✧
-curl -sL https://raw.githubusercontent.com/Ado-rgb/Michi-WaBot/main/Michi.sh | bash
+> curl -sL https://raw.githubusercontent.com/Ado-rgb/Michi-WaBot/main/Michi.sh | bash
 
 ❐ ✩ INSTALACION MANUAL EN TERMUX ✧
 Ejecuta estos comandos paso a paso:
