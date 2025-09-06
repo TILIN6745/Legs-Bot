@@ -2,7 +2,7 @@ import axios from 'axios'
 const { generateWAMessageContent, generateWAMessageFromContent, proto } = (await import('@whiskeysockets/baileys')).default
 
 let handler = async (m, { conn }) => {
-  const proses = '> *_🍁 Obteniendo información de los creadores..._*'
+  const proses = '✩ Obteniendo información de los creadores...'
   await conn.sendMessage(m.chat, { text: proses }, { quoted: m })
 
   async function createImage(url) {
@@ -15,13 +15,13 @@ let handler = async (m, { conn }) => {
   const owners = [
     {
       name: 'Ado',
-      desc: 'Creador Principal de 𝖠𝖨 | 𝖬𝗂𝖼𝗁𝗂 🧃',
+      desc: 'Creador y Fundado de 𝖬𝗂𝖼𝗁𝗂 🧃',
       image: 'https://iili.io/KJXfhmJ.jpg',
       buttons: [
         { name: '🌴 WhatsApp', url: 'https://wa.me/50493732693' },
         { name: '🥞 Canal OFC', url: 'https://whatsapp.com/channel/0029VbArz9fAO7RGy2915k3O' },
         { name: '🧃 Grupo', url: 'https://chat.whatsapp.com/HztBH5HP4kpBE86Nbuax4i?mode=ems_copy_c' },
-        { name: '🍂 API', url: 'https://myapiadonix.vercel.app' }
+        { name: '🍂 API', url: 'https://myapiadonix.casacam.net' }
       ]
     },
     {
@@ -50,10 +50,10 @@ let handler = async (m, { conn }) => {
 
     cards.push({
       body: proto.Message.InteractiveMessage.Body.fromObject({
-        text: `🦞 *${owner.name}*\n${owner.desc}`
+        text: `❐ *${owner.name}*\n✩ ${owner.desc}`
       }),
       footer: proto.Message.InteractiveMessage.Footer.fromObject({
-        text: '> 🍿 Conoce más sobre nuestros creadores siguiendo sus redes sociales. Haz clic en cualquier botón para acceder a sus perfiles.\nSi te gustaría apoyarlos, puedes dejar tu estrellita en el repo: github.com/Ado-rgb/Michi-WaBot'
+        text: '✧ Conoce más sobre nuestros creadores siguiendo sus redes. ✐ Si quieres apoyarlos, deja tu estrellita en el repo: github.com/Ado-rgb/Michi-WaBot'
       }),
       header: proto.Message.InteractiveMessage.Header.fromObject({
         hasMediaAttachment: true,
@@ -74,10 +74,10 @@ let handler = async (m, { conn }) => {
         },
         interactiveMessage: proto.Message.InteractiveMessage.fromObject({
           body: proto.Message.InteractiveMessage.Body.create({
-            text: '🙀 Creadores de 𝖠𝖨 | 𝖬𝗂𝖼𝗁𝗂 🧃 ⚘️'
+            text: '✩ Creadores de 𝖠𝖨 | 𝖬𝗂𝖼𝗁𝗂 🧃 ✧'
           }),
           footer: proto.Message.InteractiveMessage.Footer.create({
-            text: '🎋 Conoce a los desarrolladores de Michi'
+            text: '✐ Descubre a los desarrolladores de Michi'
           }),
           carouselMessage: proto.Message.InteractiveMessage.CarouselMessage.fromObject({
             cards
