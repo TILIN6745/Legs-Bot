@@ -15,7 +15,7 @@ let handler = async (m, { conn }) => {
   const owners = [
     {
       name: 'Ado',
-      desc: 'Creador y Fundado de 𝖬𝗂𝖼𝗁𝗂 🧃',
+      desc: 'Creador y Fundador de 𝖬𝗂𝖼𝗁𝗂 🧃',
       image: 'https://iili.io/KJXfhmJ.jpg',
       buttons: [
         { name: '🌴 WhatsApp', url: 'https://wa.me/50493732693' },
