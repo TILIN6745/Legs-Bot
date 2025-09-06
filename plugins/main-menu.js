@@ -28,7 +28,7 @@ const defaultMenu = {
 *❐ Comandos:*
 `,
 
-  header: '» ✐ *%category* ✩\n╭━─━───────━─━╯',
+  header: '» ✐ *%category* ✩\n╭━─━───────━─━',
   body: '┊ ✐ %cmd %islimit %isPremium',
   footer: '╰--------------------≫',
   after: '\n✩ ❐ Creador: Ado ✐'
