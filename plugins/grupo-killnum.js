@@ -3,7 +3,7 @@ let handler = async (m, { conn, args }) => {
 
   if (!args[0]) return m.reply('✿ *Uso correcto ›* .kicknum +212 o .kicknum 212')
 
-  let prefix = args[0].replace(/\D/g, '') // solo números del prefijo
+  let prefix = args[0].replace(/\D/g, '') 
 
   if (!prefix) return m.reply('❌ Debes poner un código de país válido, ejemplo 212')
 
@@ -33,5 +33,6 @@ handler.command = ['kicknum']
 handler.help = ['kicknum']
 handler.tags = ['group']
 handler.admin = true
+handler.botAdmin = true
 
 export default handler
