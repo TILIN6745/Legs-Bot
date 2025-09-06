@@ -6,7 +6,7 @@ const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-z
 const handler = async (m, { conn, text, command }) => {
   try {
     if (!text?.trim()) {
-      return conn.reply(m.chat, "🎋 Por favor, ingresa el nombre de la música a descargar.", m)
+      return conn.reply(m.chat, "♲︎ Por favor, ingresa el nombre de la música a descargar.", m)
     }
 
     let url, videoId, video
@@ -30,14 +30,13 @@ const handler = async (m, { conn, text, command }) => {
     const canal = author?.name || 'Desconocido'
 
     const infoMessage = 
-      `🫟 *<${title || 'Desconocido'}>*\n\n` +
-      `> ❄ Canal » *${canal}*\n` +
-      `> 🪸 Vistas » *${formattedViews}*\n` +
-      `> 🌤 Duración » *${timestamp || 'Desconocido'}*\n` +
-      `> 🍰 Publicado » *${ago || 'Desconocido'}*\n` +
-      `> 🐛 Link » ${url}`
+      `✩ Título » *${title || 'Desconocido'}*\n` +
+      `✦ Canal » *${canal}*\n` +
+      `✧ Vistas » *${formattedViews}*\n` +
+      `ꕤ Duración » *${timestamp || 'Desconocido'}*\n` +
+      `☄︎ Publicado » *${ago || 'Desconocido'}*\n` +
+      `✩ Link » ${url}`
 
-    
     await conn.sendMessage(m.chat, {
       image: { url: thumbnail || '' },
       caption: infoMessage
@@ -62,8 +61,8 @@ const handler = async (m, { conn, text, command }) => {
     const downloadUrl = json.data.url
 
     const contactName = isAudio 
-      ? "🌾 𝗬𝗧 𝗔𝗨𝗗𝗜𝗢" 
-      : "🐢 𝗬𝗧 𝗩𝗜𝗗𝗘𝗢"
+      ? "☁︎ 𝗬𝗧 𝗔𝗨𝗗𝗜𝗢" 
+      : "☁︎ 𝗬𝗧 𝗩𝗜𝗗𝗘𝗢"
 
     const fkontak = {
       key: { fromMe: false, participant: "50493732693@s.whatsapp.net" },
@@ -84,7 +83,7 @@ const handler = async (m, { conn, text, command }) => {
         video: { url: downloadUrl },
         mimetype: 'video/mp4',
         fileName: `${title}.mp4`,
-        caption: '» Descarga completa, aquí tienes tu video.'
+        caption: 'Descarga completa, aquí tienes tu video.'
       }, { quoted: fkontak })
     }
 
