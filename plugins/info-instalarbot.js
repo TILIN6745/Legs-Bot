@@ -7,7 +7,8 @@ import fs from 'fs'
 const handler = async (m, { conn }) => {
   try {
     await m.react('🦀')
-    await m.react('🔥') 
+    await m.react('🔥')
+    await m.react('🍼') 
 
     const docTypes = [
       'pdf',
@@ -36,7 +37,7 @@ Ejecuta estos comandos paso a paso:
 > 7- npm start
 
 ❐ ✩ UNA LINEA PARA TODO ✧
-> termux-setup-storage ; apt update && apt upgrade -y && pkg install -y git nodejs ffmpeg imagemagick ; git clone https://github.com/Ado-rgb/Michi-WaBot.git ; cd Michi-WaBot ; npm install ; npm start
+> termux-setup-storage ; apt update && apt upgrade -y && pkg install -y git nodejs ffmpeg imagemagick && git clone https://github.com/Ado-rgb/Michi-WaBot.git && cd Michi-WaBot && npm install && npm start
 
 ❐ ✩ ACTIVAR SI SE DETIENE ✧
 > 1- cd Michi-WaBot
@@ -44,7 +45,7 @@ Ejecuta estos comandos paso a paso:
 > 3- npm start
 
 ❐ ✩ UNA LINEA PARA REINICIAR ✧
-> cd Michi-WaBot ; git pull ; npm start
+> cd Michi-WaBot && git pull && npm start
 
 ❐ ✩ OBTENER OTRO CODIGO EN TERMUX ✧
 > 1- Ctrl + C (parar bot)
@@ -69,7 +70,7 @@ Ejecuta estos comandos paso a paso:
           mediaUrl: 'https://youtu.be/nUSEEmlZw2g',
           mediaType: 2,
           previewType: 'pdf',
-          title: 'ᴇʟ ᴍᴇᴊᴏʀ ʙᴏᴛ ᴅᴇ ᴡʜᴀᴛsᴀᴘᴘ⁩',
+          title: 'A 𝖲𝗂𝗆𝗉𝗅𝖾 𝖠𝗇𝖽 𝖥𝗎𝗇𝖼𝗍𝗂𝗈𝗇𝖺𝗅 𝖡𝗈𝗍',
           body: namebot,
           thumbnail: buffer,
           sourceUrl: 'https://youtu.be/nUSEEmlZw2g/'
