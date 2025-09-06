@@ -26,7 +26,10 @@ const handler = async (m, { conn }) => {
 ❐ ✩ DESCARGAR TERMUX AQUI ✧
 > 1- termux.uptodown.com/android
 
-❐ ✩ INSTALACION EN TERMUX ✧
+❐ ✩ INSTALACION MANUAL VIA TERMUX ✧
+curl -sL https://raw.githubusercontent.com/Ado-rgb/Michi-WaBot/main/Michi.sh | bash
+
+❐ ✩ INSTALACION MANUAL EN TERMUX ✧
 Ejecuta estos comandos paso a paso:
 > 1- termux-setup-storage
 > 2- apt update && apt upgrade -y
