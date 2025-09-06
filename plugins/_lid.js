@@ -2,12 +2,12 @@ const handler = async (msg, { conn }) => {
   const chatId = msg.key.remoteJid
   const senderId = msg.key.participant || msg.key.remoteJid
 
-  // Reacción inicial
+
   await conn.sendMessage(chatId, {
     react: { text: '🛰️', key: msg.key }
   })
 
-  // Extraer el ID citado o usar el que envió el mensaje
+
   const context = msg.message?.extendedTextMessage?.contextInfo
   const citado = context?.participant
   const objetivo = citado || senderId
