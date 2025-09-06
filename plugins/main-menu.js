@@ -23,15 +23,14 @@ const tags = {
 
 const defaultMenu = {
   before: `
-·˚✦ ༘ ꒱ Hola soy *%botname* *_(%tipo)_* ☆
+✧ Hola Soy *%botname* *_(%tipo)_* ☆
 
-❍ ¿Cómo estás? ➜ %name
 > ✦ Fecha ➜ %date
-> ✦ Hora ➜ %hour
+> ✦ Hora ➜ %hour\n───────── ⋆✩⋆ ──────────
 `,
 
-  header: '\n> *%category* ✦\n',
-  body: '> ➜ %cmd %islimit %isPremium',
+  header: '\n> *%category* ✦',
+  body: '> ✩ %cmd %islimit %isPremium',
   footer: '',
   after: `\n> ❍ Creador: Ado ✦`
 }
