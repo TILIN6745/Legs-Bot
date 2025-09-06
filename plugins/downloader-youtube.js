@@ -30,12 +30,12 @@ const handler = async (m, { conn, text, command }) => {
     const canal = author?.name || 'Desconocido'
 
     const infoMessage = 
-      `✩ Título » *${title || 'Desconocido'}*\n` +
-      `✦ Canal » *${canal}*\n` +
-      `✧ Vistas » *${formattedViews}*\n` +
-      `ꕤ Duración » *${timestamp || 'Desconocido'}*\n` +
-      `☄︎ Publicado » *${ago || 'Desconocido'}*\n` +
-      `✩ Link » ${url}`
+      `> ✩ Título » *${title || 'Desconocido'}*\n` +
+      `> ✦ Canal » *${canal}*\n` +
+      `> ✧ Vistas » *${formattedViews}*\n` +
+      `> ꕤ Duración » *${timestamp || 'Desconocido'}*\n` +
+      `> ☄︎ Publicado » *${ago || 'Desconocido'}*\n` +
+      `> ✩ Link » ${url}`
 
     await conn.sendMessage(m.chat, {
       image: { url: thumbnail || '' },
