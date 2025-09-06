@@ -9,9 +9,9 @@ let handler = m => m
 handler.before = async function (m, { conn }) {
 if (!m.messageStubType || !m.isGroup) return
 const fkontak = { 
-  "key": { "participants":"50493059810@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, 
+  "key": { "participants":"13135550002@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, 
   "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }},
-  "participant": "50498765544@s.whatsapp.net"
+  "participant": "13135550002@s.whatsapp.net"
 }  
 
 let chat = global.db.data.chats[m.chat]
