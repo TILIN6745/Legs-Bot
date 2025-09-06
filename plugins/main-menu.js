@@ -26,14 +26,14 @@ const defaultMenu = {
 ·˚✦ ༘ ꒱ Hola soy *%botname* *_(%tipo)_* ☆
 
 ❍ ¿Cómo estás? ➜ %name
-✦ Fecha ➜ %date
-✦ Hora ➜ %hour
+> ✦ Fecha ➜ %date
+> ✦ Hora ➜ %hour
 `,
 
-  header: '\n·˚✦ ༘ ꒱ *%category* ✦\n',
-  body: '➜ %cmd %islimit %isPremium',
+  header: '\n> *%category* ✦\n',
+  body: '> ➜ %cmd %islimit %isPremium',
   footer: '',
-  after: `\n❍ Creador: Ado ✦`
+  after: `\n> ❍ Creador: Ado ✦`
 }
 
 const handler = async (m, { conn, usedPrefix: _p }) => {
