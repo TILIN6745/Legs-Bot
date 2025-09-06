@@ -19,32 +19,32 @@ let usuario = `@${m.sender.split`@`[0]}`
 let pp = await conn.profilePictureUrl(m.chat, 'image').catch(_ => null) || 'https://files.catbox.moe/xr2m6u.jpg'
 
 
-let nombre = `✧ El nombre del grupo fue modificado.  
-✐ Acción realizada por: ${usuario}  
+let nombre = `*✧ El nombre del grupo fue modificado.*  
+> ✐ Acción realizada por: ${usuario}  
 ✧ Nuevo nombre establecido: *${m.messageStubParameters[0]}*`
 
-let foto = `✧ La foto del grupo ha sido actualizada.  
-✐ Cambio realizado por: ${usuario}`
+let foto = `> ✧ La foto del grupo ha sido actualizada.  
+*✐ Cambio realizado por: ${usuario}*`
 
-let edit = `✧ Los permisos de configuración fueron modificados.  
+let edit = `*✧ Los permisos de configuración fueron modificados.*  
 ✐ Ahora *${m.messageStubParameters[0] == 'on' ? 'solo los administradores' : 'todos los miembros'}* pueden cambiar la información del grupo.  
-✧ Acción realizada por: ${usuario}`
+> ✧ Acción realizada por: ${usuario}`
 
-let newlink = `✧ El enlace de invitación al grupo fue restablecido.  
+let newlink = `> *✧ El enlace de invitación al grupo fue restablecido.*  
 ✐ Acción realizada por: ${usuario}`
 
-let status = `✧ El estado del grupo cambió.  
+let status = `> ✧ El estado del grupo cambió.  
 ✐ El grupo fue *${m.messageStubParameters[0] == 'on' ? 'cerrado' : 'abierto'}*.  
 ✧ Ahora *${m.messageStubParameters[0] == 'on' ? 'solo los administradores' : 'todos los miembros'}* pueden enviar mensajes.  
-✐ Cambio realizado por: ${usuario}`
+*✐ Cambio realizado por: ${usuario}*`
 
-let admingp = `✧ Un miembro recibió permisos de administrador.  
+let admingp = `*✧ Un miembro recibió permisos de administrador.*  
 ✐ Nuevo administrador: @${m.messageStubParameters[0].split`@`[0]}  
-✧ Acción realizada por: ${usuario}`
+> ✧ Acción realizada por: ${usuario}`
 
-let noadmingp = `✧ Un administrador perdió sus privilegios.  
+let noadmingp = `*✧ Un administrador perdió sus privilegios.*
 ✐ Miembro afectado: @${m.messageStubParameters[0].split`@`[0]}  
-✧ Acción realizada por: ${usuario}`
+> ✧ Acción realizada por: ${usuario}`
 
 
 
