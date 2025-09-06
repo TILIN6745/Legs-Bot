@@ -30,7 +30,7 @@ const defaultMenu = {
 `,
 
   header: '\n> *%category* ✦',
-  body: '> ✩ %cmd %islimit %isPremium',
+  body: '> *✩* %cmd %islimit %isPremium',
   footer: '',
   after: `\n> ❍ Creador: Ado ✦`
 }
