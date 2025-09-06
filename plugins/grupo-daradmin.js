@@ -36,4 +36,5 @@ const daradmin = async (m, { conn, isOwner }) => {
 daradmin.command = /^(daradmin|daradmins)$/i
 daradmin.help = ['daradmin']
 daradmin.tags = ['group']
+daradmin.botAdmin = true
 export default daradmin
