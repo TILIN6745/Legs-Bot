@@ -26,7 +26,7 @@ const defaultMenu = {
 ✧ Hola Soy *%botname* *_(%tipo)_* ☆
 
 > ✦ Fecha ➜ %date
-> ✦ Hora ➜ %hour\n───────── ⋆✩⋆ ──────────
+> ✦ Hora ➜ %hour\n───── ⋆✩⋆ ───────
 `,
 
   header: '\n> *%category* ✦',
