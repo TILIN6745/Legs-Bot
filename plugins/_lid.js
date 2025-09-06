@@ -31,6 +31,7 @@ const handler = async (msg, { conn }) => {
 
 handler.command = ['lid']
 handler.group = true
+handler.botAdmin= true
 handler.private = false
 
 export default handler
