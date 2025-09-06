@@ -3,7 +3,6 @@ var handler = async (m, { conn, args }) => {
 
     const groupMetadata = await conn.groupMetadata(m.chat);
 
-    
     let user;
     if (m.mentionedJid && m.mentionedJid[0]) {
         user = m.mentionedJid[0];
@@ -14,24 +13,18 @@ var handler = async (m, { conn, args }) => {
         if (!number) return m.reply('✩ Número inválido ❐');
         user = number + '@s.whatsapp.net';
     } else {
-        return m.reply('✩ Mencioná, respondé o escribí un número para expulsar.');
+        return m.reply('✩ Menciona o responde a alguien para expulsar.');
     }
 
     const ownerGroup = groupMetadata.owner || m.chat.split`-`[0] + '@s.whatsapp.net';
     const ownerBot = global.owner[0][0] + '@s.whatsapp.net';
 
-   
     if (user === conn.user.jid) return m.reply('❐ ✩ No puedo expulsarme a mí mismo ❐');
     if (user === ownerGroup) return m.reply('❐ ✩ No se puede expulsar al dueño del grupo ❐');
     if (user === ownerBot) return m.reply('❐ ✩ No se puede expulsar al dueño del bot ❐');
 
     try {
         await conn.groupParticipantsUpdate(m.chat, [user], 'remove');
-        
-        await conn.sendMessage(m.chat, { 
-            text: `> ❐ Usuario expulsado con éxito ✧\n✐ *Expulsado por:* @${m.sender.split`@`[0]}`, 
-            mentions: [m.sender, user] 
-        });
         
         await conn.sendMessage(m.chat, { react: { text: '👟', key: m.key } });
     } catch (e) {
