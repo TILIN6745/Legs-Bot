@@ -1,52 +1,66 @@
 import fetch from "node-fetch"
 import yts from 'yt-search'
+import axios from "axios"
 
 const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]{11})/
 
-const handler = async (m, { conn, text, command }) => {
+const handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
     if (!text?.trim()) {
-      return conn.reply(m.chat, "♲︎ Por favor, ingresa el nombre de la música a descargar.", m)
+      return conn.reply(m.chat, "✩ Coloca el link o nombre del video a descargar.", m)
     }
 
-    let url, videoId, video
-    const isUrl = youtubeRegexID.test(text)
-    
-    if (isUrl) {
-      url = text
-      videoId = url.match(youtubeRegexID)[1]
-      const info = await yts({ videoId })
-      video = info?.videos?.[0] || null
-      if (!video) return m.reply("✧ No se pudo obtener información del video.")
-    } else {
-      const search = await yts(text)
-      if (!search?.videos?.length) return m.reply("✧ No se encontraron resultados para tu búsqueda.")
-      video = search.videos[0]
-      url = video.url
+    let videoIdToFind = text.match(youtubeRegexID) || null
+    let ytplay2 = await yts(videoIdToFind === null ? text : 'https://youtu.be/' + videoIdToFind[1])
+
+    if (videoIdToFind) {
+      const videoId = videoIdToFind[1]
+      ytplay2 = ytplay2.all.find(item => item.videoId === videoId) || ytplay2.videos.find(item => item.videoId === videoId)
     }
 
-    const { title, thumbnail, timestamp, views, ago, author } = video
-    const formattedViews = formatViews(views)
-    const canal = author?.name || 'Desconocido'
+    ytplay2 = ytplay2.all?.[0] || ytplay2.videos?.[0] || ytplay2
 
-    const infoMessage = 
-      `> ✩ Título » *${title || 'Desconocido'}*\n` +
-      `> ✦ Canal » *${canal}*\n` +
-      `> ✧ Vistas » *${formattedViews}*\n` +
-      `> ꕤ Duración » *${timestamp || 'Desconocido'}*\n` +
-      `> ☄︎ Publicado » *${ago || 'Desconocido'}*\n` +
-      `> ✩ Link » ${url}`
+    if (!ytplay2 || ytplay2.length === 0) {
+      return m.reply('✧ No se encontraron resultados para tu búsqueda.')
+    }
 
-    await conn.sendMessage(m.chat, {
-      image: { url: thumbnail || '' },
-      caption: infoMessage
-    }, { quoted: m })
+    let { title, thumbnail, timestamp, views, ago, url, author } = ytplay2
+    title = title || 'no encontrado'
+    thumbnail = thumbnail || ''
+    timestamp = timestamp || 'no encontrado'
+    views = views || 'no disponible'
+    ago = ago || 'no disponible'
+    url = url || ''
+    author = author || { name: 'Desconocido' }
+
+    const vistas = formatViews(views)
+    const canal = author.name || 'Desconocido'
+
+    const infoMessage = `*${title}*\n\n> ✩ Canal › *${canal}*\n> ✦ Vistas › *${vistas}*\n> ⴵ Duración › *${timestamp}*\n> ❐ Publicado › *${ago}*\n> 🜸 Link › ${url}`
+    const thumb = (await conn.getFile(thumbnail))?.data
+
+    const JT = {
+      contextInfo: {
+        externalAdReply: {
+          title: '',
+          body: title,
+          mediaType: 1,
+          previewType: 0,
+          mediaUrl: url,
+          sourceUrl: 'https://youtube.com',
+          thumbnail: thumb,
+          renderLargerThumbnail: true,
+        },
+      },
+    }
+
+    await conn.reply(m.chat, infoMessage, m, JT)
 
     const isAudio = ['play', 'yta', 'ytmp3', 'playaudio'].includes(command)
     const isVideo = ['play2', 'ytv', 'ytmp4', 'mp4'].includes(command)
 
     if (!isAudio && !isVideo) {
-      return conn.reply(m.chat, '✧ Comando no reconocido.', m)
+      return conn.reply(m.chat, '✧︎ Comando no reconocido.', m)
     }
 
     const format = isAudio ? 'audio' : 'video'
@@ -60,42 +74,31 @@ const handler = async (m, { conn, text, command }) => {
 
     const downloadUrl = json.data.url
 
-    const contactName = isAudio 
-      ? "☁︎ 𝗬𝗧 𝗔𝗨𝗗𝗜𝗢" 
-      : "☁︎ 𝗬𝗧 𝗩𝗜𝗗𝗘𝗢"
-
-    const fkontak = {
-      key: { fromMe: false, participant: "50493732693@s.whatsapp.net" },
-      message: {
-        contactMessage: { displayName: contactName }
-      }
-    }
-
     if (isAudio) {
       await conn.sendMessage(m.chat, {
         audio: { url: downloadUrl },
         mimetype: 'audio/mpeg',
         fileName: `${title}.mp3`,
         ptt: true
-      }, { quoted: fkontak })
+      }, { quoted: m })
     } else if (isVideo) {
       await conn.sendMessage(m.chat, {
         video: { url: downloadUrl },
         mimetype: 'video/mp4',
         fileName: `${title}.mp4`,
-        caption: 'Descarga completa, aquí tienes tu video.'
-      }, { quoted: fkontak })
+        caption: '❏ Descarga completa, aquí tienes tu video.'
+      }, { quoted: m })
     }
 
   } catch (error) {
     console.error('[ERROR YOUTUBE]', error)
-    return m.reply(`⚠︎ Ocurrió un error: ${error.message || error}`)
+    return m.reply(`⚠︎ Algo falló: ${error.message || error}`)
   }
 }
 
-handler.command = ['play', 'yta', 'ytmp3', 'playaudio', 'play2', 'ytv', 'ytmp4', 'mp4']
-handler.help = ['play', 'play2', 'ytmp3', 'ytmp4']
-handler.tags = ['downloader']
+handler.command = handler.help = ['play', 'yta', 'ytmp3', 'play2', 'ytv', 'ytmp4', 'playaudio', 'mp4']
+handler.tags = ['descargas']
+handler.group = true
 
 export default handler
 
