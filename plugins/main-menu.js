@@ -61,7 +61,7 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
     }
 
     let nombreBot = global.namebot || 'Bot'
-    let bannerFinal = 'https://iili.io/KJXN7yB.jpg'
+    let bannerFinal = 'https://iili.io/KCX22B1.jpg' // tu banner
 
     const botActual = conn.user?.jid?.split('@')[0]?.replace(/\D/g, '')
     const configPath = join('./JadiBots', botActual || '', 'config.json')
@@ -117,13 +117,20 @@ const handler = async (m, { conn, usedPrefix: _p }) => {
       (_, name) => String(replace[name])
     )
 
+    
     await conn.sendMessage(m.chat, { react: { text: '🍼', key: m.key } })
+
+    
     await conn.sendMessage(
       m.chat,
       { 
         image: { url: bannerFinal },
         caption: text.trim(),
         footer: '·˚✦ ༘ ꒱ Menú de comandos ☆',
+        contextInfo: { 
+          forwardingScore: 999, 
+          isForwarded: true
+        }
       },
       { quoted: fkontak }
     )
