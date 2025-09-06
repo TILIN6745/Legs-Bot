@@ -3,22 +3,22 @@ import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
 
 const tags = {
-  owner: '·˚✦ ༘ ꒱ Propietario',
-  serbot: '·˚✦ ༘ ꒱ Subbots',
-  eco: '·˚✦ ༘ ꒱ Economía',
-  downloader: '·˚✦ ༘ ꒱ Descargas',
-  tools: '·˚✦ ༘ ꒱ Herramientas',
-  efectos: '·˚✦ ༘ ꒱ Efectos',
-  info: '·˚✦ ༘ ꒱ Información',
-  game: '·˚✦ ༘ ꒱ Juegos',
-  gacha: '·˚✦ ༘ ꒱ Gacha Anime',
-  reacciones: '·˚✦ ༘ ꒱ Reacciones Anime',
-  group: '·˚✦ ༘ ꒱ Grupos',
-  search: '·˚✦ ༘ ꒱ Buscadores',
-  sticker: '·˚✦ ༘ ꒱ Stickers',
-  ia: '·˚✦ ༘ ꒱ IA',
-  channel: '·˚✦ ༘ ꒱ Canales',
-  fun: '·˚✦ ༘ ꒱ Diversión',
+  owner: '·˚✦ Propietario',
+  serbot: '·˚✦ Subbots',
+  eco: '·˚✦ Economía',
+  downloader: '·˚✦ Descargas',
+  tools: '·˚✦ Herramientas',
+  efectos: '·˚✦ Efectos',
+  info: '·˚✦ Información',
+  game: '·˚✦ Juegos',
+  gacha: '·˚✦ Gacha Anime',
+  reacciones: '·˚✦ Reacciones Anime',
+  group: '·˚✦ Grupos',
+  search: '·˚✦ Buscadores',
+  sticker: '·˚✦ Stickers',
+  ia: '·˚✦ IA',
+  channel: '·˚✦ Canales',
+  fun: '·˚✦ Diversión',
 }
 
 const defaultMenu = {
