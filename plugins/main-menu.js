@@ -23,17 +23,18 @@ const tags = {
 
 const defaultMenu = {
   before: `
-✐ Hola Soy %botname ( % tipo )
+✐ Hola Soy *%botname* ( *%tipo* )
 
-*❐ Comandos*
-╭━─━──────────────━─━╮
+❐ Comandos
+╭━─━──────────━─━╮
 `,
 
-  header: '╰╮ » ✐ *%category* ✩\n╭━─━──────────────━─━╯',
+  header: '╰╮ » ✐ *%category* ✩\n╭━─━────────────━─━╯',
   body: '┊ ✐ %cmd %islimit %isPremium',
-  footer: '--------------------≫',
+  footer: '╰--------------------≫',
   after: '\n✩ ❐ Creador: Ado ✐'
 }
+
 const handler = async (m, { conn, usedPrefix: _p }) => {
   try {
     const { exp, limit, level } = global.db.data.users[m.sender]
